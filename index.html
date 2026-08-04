@@ -121,7 +121,7 @@
     .domain{
       min-width:0;
       display:grid;
-      grid-template-rows:auto auto minmax(248px,1fr) auto auto;
+      grid-template-rows:auto auto minmax(248px,1fr) auto;
       gap:10px;
       position:relative;
     }
@@ -188,9 +188,24 @@
     .metric-value{font-size:26px;font-weight:880;letter-spacing:-.05em;margin-top:2px}
     .press-domain .metric-value.accent{color:var(--press)}
     .leg-domain .metric-value.accent{color:var(--leg)}
-    .chart-zone{min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center}
+    .chart-zone{min-width:0;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
     .chart-block{min-width:0}
     .chart-title{font-size:10px;font-weight:750;color:#32435b;margin-bottom:5px}
+    .chart-alert{
+      margin-top:8px;border-radius:11px;padding:8px 10px;border:1px solid transparent;
+      display:flex;gap:8px;align-items:flex-start;min-height:54px
+    }
+    .press-domain .chart-alert{background:linear-gradient(180deg,#eef8fd,#f8fcff);border-color:#bfe0f2}
+    .leg-domain .chart-alert{background:linear-gradient(180deg,#f2f0ff,#faf9ff);border-color:#d7d0ff}
+    .chart-alert-icon{
+      width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;color:#fff;
+      box-shadow:0 6px 12px rgba(0,0,0,.08)
+    }
+    .press-domain .chart-alert-icon{background:linear-gradient(135deg,#ff8a00,#e23c52)}
+    .leg-domain .chart-alert-icon{background:linear-gradient(135deg,#7a59ff,#5a39d8)}
+    .chart-alert-copy{min-width:0}
+    .chart-alert-label{font-size:9px;font-weight:850;letter-spacing:.05em;color:#7b8798;text-transform:uppercase}
+    .chart-alert-text{font-size:10.2px;font-weight:760;color:#233650;line-height:1.3;margin-top:2px}
     .sparkline{height:78px;width:100%;position:relative}
     .sparkline svg{width:100%;height:100%;overflow:visible}
     .spark-grid line{stroke:#e7edf3;stroke-width:1}
@@ -218,12 +233,35 @@
     .press-domain .strategy li::before{background:var(--press-2)}
     .leg-domain .strategy li::before{background:var(--leg-2)}
     .open-monitor{
-      border:0;border-radius:9px;color:#fff;padding:9px 13px;font-weight:780;font-size:11px;white-space:nowrap;
-      display:inline-flex;gap:8px;align-items:center;transition:.18s
+      position:relative;border:1px solid rgba(255,255,255,.16);border-radius:13px;color:#fff;
+      padding:11px 14px 11px 17px;white-space:nowrap;
+      display:inline-flex;align-items:center;justify-content:space-between;gap:18px;
+      min-width:205px;overflow:hidden;
+      box-shadow:0 10px 22px rgba(6,24,47,.18), inset 0 1px 0 rgba(255,255,255,.13);
+      transition:transform .18s ease, box-shadow .18s ease, filter .18s ease
     }
-    .press-domain .open-monitor{background:linear-gradient(135deg,#075b96,var(--navy-900))}
-    .leg-domain .open-monitor{background:linear-gradient(135deg,#4b34b6,#241867)}
-    .open-monitor:hover{filter:brightness(1.08);transform:translateY(-1px)}
+    .open-monitor::before{
+      content:"";position:absolute;inset:0;
+      background:linear-gradient(90deg,rgba(255,255,255,.12),transparent 48%);
+      opacity:.55;pointer-events:none
+    }
+    .press-domain .open-monitor{background:linear-gradient(135deg,#087fbd,#075489 58%,#06284d)}
+    .leg-domain .open-monitor{background:linear-gradient(135deg,#6b52dd,#5037bd 58%,#281b72)}
+    .open-monitor strong{
+      position:relative;z-index:1;
+      font-size:16px;font-weight:900;letter-spacing:-.025em;line-height:1
+    }
+    .open-monitor span{
+      position:relative;z-index:1;
+      width:27px;height:27px;border-radius:50%;display:grid;place-items:center;
+      background:rgba(255,255,255,.16);font-size:14px;font-weight:900;
+      border:1px solid rgba(255,255,255,.16)
+    }
+    .open-monitor:hover{
+      filter:brightness(1.07);transform:translateY(-2px);
+      box-shadow:0 15px 28px rgba(6,24,47,.24), inset 0 1px 0 rgba(255,255,255,.16)
+    }
+    .open-monitor:active{transform:translateY(0)}
 
     .compact-panel{padding:0 12px 9px;box-shadow:0 5px 16px rgba(10,32,62,.05)}
     .panel-head{
@@ -243,7 +281,7 @@
     .severity.info{background:var(--blue-info)}
     .level{font-weight:760;text-transform:capitalize}
     .signal-title{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#30415a}
-    .signal-time{color:var(--muted);font-variant-numeric:tabular-nums;max-width:105px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .signal-time{color:var(--muted);font-variant-numeric:tabular-nums;min-width:76px;text-align:right;white-space:nowrap}
     .empty-row{padding:12px 2px;font-size:10px;color:var(--muted)}
 
     .activity{
@@ -300,6 +338,7 @@
       .metric-stack{grid-row:auto;border-right:0;border-bottom:1px solid var(--line);padding:0 0 9px;display:grid;grid-template-columns:1fr 1fr}
       .chart-zone{margin-top:10px}
       .strategy{grid-column:1;margin-top:9px;grid-template-columns:1fr}
+      .open-monitor{min-width:100%;justify-content:space-between}
       .footer{padding:0 10px}.footer-right{display:none}
     }
   </style>
@@ -395,6 +434,13 @@
                   <div class="chart-title">Actividad diaria · 7 días</div>
                   <div class="sparkline" id="pressSpark" aria-label="Evolución de publicaciones de prensa"></div>
                   <div class="chart-foot"><span id="pressStart">—</span><span id="pressEnd">—</span></div>
+                  <div class="chart-alert" id="pressAlertBox">
+                    <div class="chart-alert-icon">!</div>
+                    <div class="chart-alert-copy">
+                      <div class="chart-alert-label">Novedad destacada</div>
+                      <div class="chart-alert-text" id="pressAlertText">Esperando resumen de prensa.</div>
+                    </div>
+                  </div>
                 </div>
                 <div class="chart-block">
                   <div class="chart-title">Distribución temporal</div>
@@ -410,7 +456,7 @@
                     <li>Esperando resumen ejecutivo del monitor de prensa.</li>
                   </ul>
                 </div>
-                <a class="open-monitor" href="https://smoralesm07-source.github.io/Monitor/" target="_blank" rel="noopener">Abrir monitor <span>→</span></a>
+                <a class="open-monitor" href="https://smoralesm07-source.github.io/Monitor/" target="_blank" rel="noopener"><strong>Abrir monitor</strong><span>↗</span></a>
               </div>
             </div>
           </article>
@@ -420,10 +466,6 @@
             <div class="signal-list" id="pressSignals"><div class="empty-row">Esperando datos…</div></div>
           </article>
 
-          <article class="compact-panel">
-            <header class="panel-head"><h3>◷ Actividad reciente — Prensa</h3><span class="panel-meta">Últimos eventos</span></header>
-            <div class="activity-list" id="pressActivity"><div class="empty-row">Esperando datos…</div></div>
-          </article>
         </section>
 
         <section class="domain leg-domain" aria-labelledby="legDomainTitle">
@@ -474,6 +516,13 @@
                   <div class="chart-title">Actividad legislativa · 7 días</div>
                   <div class="sparkline" id="legSpark" aria-label="Evolución de actividad legislativa"></div>
                   <div class="chart-foot"><span id="legStart">—</span><span id="legEnd">—</span></div>
+                  <div class="chart-alert" id="legAlertBox">
+                    <div class="chart-alert-icon">!</div>
+                    <div class="chart-alert-copy">
+                      <div class="chart-alert-label">Novedad destacada</div>
+                      <div class="chart-alert-text" id="legAlertText">Esperando resumen legislativo.</div>
+                    </div>
+                  </div>
                 </div>
                 <div class="chart-block">
                   <div class="chart-title">Distribución temporal</div>
@@ -489,7 +538,7 @@
                     <li>Esperando resumen ejecutivo del monitor legislativo.</li>
                   </ul>
                 </div>
-                <a class="open-monitor" href="https://smoralesm07-source.github.io/Monitor-Legislativo/" target="_blank" rel="noopener">Abrir monitor <span>→</span></a>
+                <a class="open-monitor" href="https://smoralesm07-source.github.io/Monitor-Legislativo/" target="_blank" rel="noopener"><strong>Abrir monitor</strong><span>↗</span></a>
               </div>
             </div>
           </article>
@@ -499,10 +548,6 @@
             <div class="signal-list" id="legSignals"><div class="empty-row">Esperando datos…</div></div>
           </article>
 
-          <article class="compact-panel">
-            <header class="panel-head"><h3>◷ Actividad reciente — Legislativo</h3><span class="panel-meta">Últimos eventos</span></header>
-            <div class="activity-list" id="legActivity"><div class="empty-row">Esperando datos…</div></div>
-          </article>
         </section>
       </div>
     </main>
@@ -618,10 +663,22 @@
       return v === 'alta' ? 'alta' : v === 'media' ? 'media' : 'info';
     }
 
+    function recentAlerts(alerts){
+      return (Array.isArray(alerts) ? [...alerts] : [])
+        .sort((a,b)=>{
+          const da = parseDate(a?.fecha);
+          const db = parseDate(b?.fecha);
+          return (db?.getTime() || 0) - (da?.getTime() || 0);
+        })
+        .slice(0,4);
+    }
+
     function renderSignals(containerId, countId, alerts){
       const container = $(containerId);
-      const list = Array.isArray(alerts) ? alerts.slice(0,4) : [];
-      $(countId).textContent = `${list.length} ${list.length === 1 ? 'señal' : 'señales'}`;
+      const list = recentAlerts(alerts);
+      $(countId).textContent = list.length
+        ? `${list.length} más ${list.length === 1 ? 'reciente' : 'recientes'}`
+        : 'Sin alertas';
       if(!list.length){
         container.innerHTML = '<div class="empty-row">Sin señales prioritarias disponibles.</div>';
         return;
@@ -631,27 +688,12 @@
         const content = `
           <span class="severity ${severity}"></span>
           <span class="level">${esc(severity)}</span>
-          <span class="signal-title" title="${esc(item.titulo)}">${esc(item.titulo || 'Señal detectada')}</span>
-          <span class="signal-time" title="${esc(item.detalle || '')}">${esc(item.detalle || (item.link ? 'Abrir' : '—'))}</span>`;
+          <span class="signal-title" title="${esc(item.detalle || item.titulo || '')}">${esc(item.titulo || 'Señal detectada')}</span>
+          <span class="signal-time" title="${esc(item.detalle || '')}">${item.fecha ? esc(fmtDate(item.fecha,'short')) : '—'}</span>`;
         return item.link
           ? `<a class="signal" href="${esc(item.link)}" target="_blank" rel="noopener">${content}</a>`
           : `<div class="signal">${content}</div>`;
       }).join('');
-    }
-
-    function renderActivity(containerId, activity){
-      const container = $(containerId);
-      const list = Array.isArray(activity) ? activity.slice(0,3) : [];
-      if(!list.length){
-        container.innerHTML = '<div class="empty-row">Sin actividad reciente disponible.</div>';
-        return;
-      }
-      container.innerHTML = list.map(item=>`
-        <div class="activity">
-          <span class="activity-time">${fmtDate(item.fecha,'time')}</span>
-          <span class="activity-dot"></span>
-          <span class="activity-text" title="${esc(item.texto)}">${esc(item.texto || 'Actividad registrada')}</span>
-        </div>`).join('');
     }
 
     function pressInsights(data){
@@ -684,6 +726,31 @@
     function renderStrategy(id, insights){
       $(id).innerHTML = insights.map(text=>`<li>${esc(text)}</li>`).join('');
     }
+    function latestAlertText(data, domain){
+      const alerts = recentAlerts(data?.alertas);
+      if(alerts.length){
+        const top = alerts[0];
+        const sev = String(top.severidad || 'info').toLowerCase();
+        const sevLabel = sev === 'alta' ? 'Alerta alta' : sev === 'media' ? 'Alerta media' : 'Novedad';
+        return `${sevLabel}: ${top.titulo || 'Señal detectada'}`;
+      }
+      const series = normalizeSeries(data?.serie_7d);
+      if(series.length >= 2){
+        const latest = series[series.length - 1].n;
+        const previous = series.slice(0, -1);
+        const avg = previous.length ? previous.reduce((a,b)=>a+b.n,0) / previous.length : 0;
+        if(latest > avg && latest > 0){
+          return `Último día con actividad superior al promedio reciente (${latest}).`;
+        }
+      }
+      return domain === 'press'
+        ? 'Sin alertas críticas; revisar el monitoreo para novedades y cobertura reciente.'
+        : 'Sin alertas críticas; revisar el monitoreo para cambios de etapa o urgencia.';
+    }
+
+    function renderAlertBox(id, text){
+      $(id).textContent = text;
+    }
 
     function renderPress(data){
       $('press24').textContent = num(data.nuevas_24h);
@@ -694,8 +761,8 @@
       $('pressState').textContent = 'En tiempo real';
       renderChart('press',data.serie_7d,'press');
       renderStrategy('pressStrategy',pressInsights(data));
+      renderAlertBox('pressAlertText', latestAlertText(data,'press'));
       renderSignals('pressSignals','pressSignalCount',data.alertas);
-      renderActivity('pressActivity',data.actividad);
     }
 
     function renderLeg(data){
@@ -707,8 +774,8 @@
       $('legState').textContent = 'En tiempo real';
       renderChart('leg',data.serie_7d,'leg');
       renderStrategy('legStrategy',legInsights(data));
+      renderAlertBox('legAlertText', latestAlertText(data,'leg'));
       renderSignals('legSignals','legSignalCount',data.alertas);
-      renderActivity('legActivity',data.actividad);
     }
 
     function renderFailure(domain){
@@ -716,9 +783,9 @@
       $(isPress ? 'pressState' : 'legState').textContent = 'Sin conexión';
       $(isPress ? 'pressStrategy' : 'legStrategy').innerHTML =
         '<li>No fue posible cargar el archivo resumen.json. El monitor completo sigue disponible mediante el botón de acceso.</li>';
+      const alertId = isPress ? 'pressAlertText' : 'legAlertText';
+      $(alertId).textContent = 'Resumen no disponible en este momento. Utiliza el botón Abrir monitor para revisar la fuente completa.';
       $(isPress ? 'pressSignals' : 'legSignals').innerHTML =
-        '<div class="empty-row">Resumen no disponible.</div>';
-      $(isPress ? 'pressActivity' : 'legActivity').innerHTML =
         '<div class="empty-row">Resumen no disponible.</div>';
     }
 
