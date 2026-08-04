@@ -252,7 +252,7 @@
           </span>
         </a>
         <div class="nav-actions">
-          <span class="status-pill"><i class="status-dot"></i> 2 monitores operativos</span>
+          <span class="status-pill"><i class="status-dot"></i> <span id="monitorStatus">Conectando monitores</span></span>
           <button class="ghost-button" id="refreshBtn" type="button" aria-label="Actualizar indicadores">↻&nbsp; Actualizar</button>
         </div>
       </nav>
@@ -266,7 +266,7 @@
         <div class="hero-side">
           <div class="date" id="longDate">Martes, 4 de agosto de 2026</div>
           <strong id="greeting">Buenas tardes, Sebastián</strong>
-          <span>El entorno muestra actividad moderada. Hay señales que conviene revisar en ambos monitores.</span>
+          <span id="heroStatus">Conectando con los resúmenes ejecutivos de prensa y agenda legislativa.</span>
         </div>
       </section>
     </div>
@@ -276,29 +276,29 @@
     <section class="overview" aria-label="Indicadores generales">
       <article class="kpi">
         <div class="kpi-head"><span>Novedades detectadas</span><span class="kpi-icon">◎</span></div>
-        <div class="kpi-value" id="kpiTotal">14</div>
-        <div class="kpi-note"><span class="trend-up">↑ 5</span> desde la revisión anterior</div>
+        <div class="kpi-value" id="kpiTotal">—</div>
+        <div class="kpi-note" id="kpiTotalNote">Esperando datos de ambos monitores</div>
       </article>
       <article class="kpi">
         <div class="kpi-head"><span>Prioridad alta</span><span class="kpi-icon">!</span></div>
-        <div class="kpi-value" id="kpiHigh">3</div>
+        <div class="kpi-value" id="kpiHigh">—</div>
         <div class="kpi-note">Señales que requieren revisión</div>
       </article>
       <article class="kpi">
         <div class="kpi-head"><span>Menciones en prensa</span><span class="kpi-icon">◫</span></div>
-        <div class="kpi-value" id="kpiPress">9</div>
+        <div class="kpi-value" id="kpiPress">—</div>
         <div class="kpi-note">Últimas 24 horas</div>
       </article>
       <article class="kpi">
         <div class="kpi-head"><span>Movimientos legislativos</span><span class="kpi-icon">§</span></div>
-        <div class="kpi-value" id="kpiLeg">5</div>
-        <div class="kpi-note">Nuevos antecedentes relevantes</div>
+        <div class="kpi-value" id="kpiLeg">—</div>
+        <div class="kpi-note">Movimientos durante los últimos 7 días</div>
       </article>
     </section>
 
     <div class="section-head">
       <div><h2>Monitores activos</h2><p>Resumen comparado y acceso directo a cada herramienta.</p></div>
-      <div class="update-time">Última sincronización: <strong id="lastSync">hoy, 13:42</strong></div>
+      <div class="update-time">Última sincronización: <strong id="lastSync">pendiente</strong></div>
     </div>
 
     <section class="monitor-grid">
@@ -308,28 +308,26 @@
             <div class="monitor-icon">▤</div>
             <div><div class="monitor-title">Monitor de Prensa</div><div class="monitor-desc">UAF · LA/FT · Entorno nacional</div></div>
           </div>
-          <span class="live-pill">Activo</span>
+          <span class="live-pill" id="pressState">Conectando</span>
         </div>
         <div class="card-body">
           <div>
-            <div class="primary-number" id="pressPrimary">9</div>
+            <div class="primary-number" id="pressPrimary">—</div>
             <div class="primary-label">publicaciones incorporadas en 24 h</div>
             <div class="mini-stats">
-              <div class="mini-stat"><b id="pressDirect">4</b><span>Menciones directas UAF</span></div>
-              <div class="mini-stat"><b id="pressHigh">2</b><span>Relevancia alta</span></div>
+              <div class="mini-stat"><b id="pressDirect">—</b><span>Menciones directas UAF</span></div>
+              <div class="mini-stat"><b id="pressHigh">—</b><span>Relevancia alta</span></div>
             </div>
           </div>
           <div class="chart-wrap" aria-label="Actividad de prensa últimos siete días">
             <div class="chart-grid"></div>
-            <div class="bars">
-              <i class="bar" style="height:28%"></i><i class="bar" style="height:44%"></i><i class="bar" style="height:36%"></i><i class="bar" style="height:67%"></i><i class="bar" style="height:53%"></i><i class="bar" style="height:76%"></i><i class="bar" style="height:92%"></i>
-            </div>
-            <div class="chart-caption"><span>29 jul</span><span>4 ago</span></div>
+            <div class="bars" id="pressBars"></div>
+            <div class="chart-caption" id="pressCaption"><span>—</span><span>—</span></div>
           </div>
         </div>
         <div class="latest-item">
           <span class="latest-badge">Última señal</span>
-          <div class="latest-copy"><strong>Actividad reciente vinculada a prevención LA/FT</strong>El monitor identificó nuevas publicaciones para clasificación y revisión analítica.</div>
+          <div class="latest-copy" id="pressLatest"><strong>Esperando resumen de prensa</strong>El contenido aparecerá después de la próxima ejecución del monitor.</div>
         </div>
         <div class="card-footer">
           <a class="open-button" href="https://smoralesm07-source.github.io/Monitor/" target="_blank" rel="noopener">Abrir monitor de prensa <span>→</span></a>
@@ -343,28 +341,26 @@
             <div class="monitor-icon">⚖</div>
             <div><div class="monitor-title">Monitor Legislativo</div><div class="monitor-desc">Ley N.º 19.913 · Congreso Nacional</div></div>
           </div>
-          <span class="live-pill">Activo</span>
+          <span class="live-pill" id="legState">Conectando</span>
         </div>
         <div class="card-body">
           <div>
-            <div class="primary-number" id="legPrimary">5</div>
+            <div class="primary-number" id="legPrimary">—</div>
             <div class="primary-label">movimientos legislativos recientes</div>
             <div class="mini-stats">
-              <div class="mini-stat"><b id="legDirect">1</b><span>Impacto institucional directo</span></div>
-              <div class="mini-stat"><b id="legUrgent">2</b><span>Con urgencia vigente</span></div>
+              <div class="mini-stat"><b id="legDirect">—</b><span>Impacto institucional directo</span></div>
+              <div class="mini-stat"><b id="legUrgent">—</b><span>Con urgencia vigente</span></div>
             </div>
           </div>
           <div class="chart-wrap" aria-label="Actividad legislativa últimos siete días">
             <div class="chart-grid"></div>
-            <div class="bars">
-              <i class="bar" style="height:22%"></i><i class="bar" style="height:22%"></i><i class="bar" style="height:48%"></i><i class="bar" style="height:31%"></i><i class="bar" style="height:71%"></i><i class="bar" style="height:57%"></i><i class="bar" style="height:83%"></i>
-            </div>
-            <div class="chart-caption"><span>29 jul</span><span>4 ago</span></div>
+            <div class="bars" id="legBars"></div>
+            <div class="chart-caption" id="legCaption"><span>—</span><span>—</span></div>
           </div>
         </div>
         <div class="latest-item">
           <span class="latest-badge">Último cambio</span>
-          <div class="latest-copy"><strong>Nuevo antecedente en cartera legislativa</strong>Se detectó movimiento en proyectos bajo seguimiento por impacto ALA/CFT.</div>
+          <div class="latest-copy" id="legLatest"><strong>Esperando resumen legislativo</strong>El contenido aparecerá después de la próxima ejecución del monitor.</div>
         </div>
         <div class="card-footer">
           <a class="open-button" href="https://smoralesm07-source.github.io/Monitor-Legislativo/" target="_blank" rel="noopener">Abrir monitor legislativo <span>→</span></a>
@@ -376,29 +372,19 @@
     <section class="lower-grid">
       <article class="panel">
         <div class="panel-header"><h3>Requiere atención</h3><span>Prioridad integrada</span></div>
-        <div class="alert-list">
-          <a class="alert-item" href="https://smoralesm07-source.github.io/Monitor-Legislativo/" target="_blank" rel="noopener">
-            <i class="severity high"></i><div class="alert-copy"><strong>Proyecto con posible impacto directo en el marco UAF</strong><span>Revisar alcance, etapa y oportunidad de incidencia técnica.</span></div><span class="alert-source">LEGISLATIVO</span>
-          </a>
-          <a class="alert-item" href="https://smoralesm07-source.github.io/Monitor/" target="_blank" rel="noopener">
-            <i class="severity high"></i><div class="alert-copy"><strong>Nueva mención institucional en medio nacional</strong><span>Publicación pendiente de validación de relevancia y contexto.</span></div><span class="alert-source">PRENSA</span>
-          </a>
-          <a class="alert-item" href="https://smoralesm07-source.github.io/Monitor-Legislativo/" target="_blank" rel="noopener">
-            <i class="severity medium"></i><div class="alert-copy"><strong>Dos iniciativas mantienen urgencia vigente</strong><span>La presión de agenda reduce el tiempo disponible para revisión.</span></div><span class="alert-source">LEGISLATIVO</span>
-          </a>
-          <a class="alert-item" href="https://smoralesm07-source.github.io/Monitor/" target="_blank" rel="noopener">
-            <i class="severity info"></i><div class="alert-copy"><strong>Aumento de actividad temática durante las últimas 24 horas</strong><span>Conviene revisar tendencias y concentración por medio.</span></div><span class="alert-source">PRENSA</span>
-          </a>
+        <div class="alert-list" id="alertList">
+          <div class="alert-item">
+            <i class="severity info"></i>
+            <div class="alert-copy"><strong>Esperando resúmenes ejecutivos</strong><span>Las señales prioritarias se integrarán automáticamente.</span></div>
+            <span class="alert-source">SISTEMA</span>
+          </div>
         </div>
       </article>
 
       <aside class="panel">
         <div class="panel-header"><h3>Actividad reciente</h3><span>Hoy</span></div>
-        <div class="timeline">
-          <div class="event"><div class="event-time">13:42</div><div class="event-copy">Sincronización general completada.</div></div>
-          <div class="event"><div class="event-time">12:58</div><div class="event-copy">El monitor legislativo detectó un nuevo antecedente.</div></div>
-          <div class="event"><div class="event-time">11:34</div><div class="event-copy">Tres publicaciones fueron incorporadas al monitor de prensa.</div></div>
-          <div class="event"><div class="event-time">09:10</div><div class="event-copy">Actualización de clasificación y prioridades.</div></div>
+        <div class="timeline" id="activityTimeline">
+          <div class="event"><div class="event-time">—</div><div class="event-copy">Esperando la primera sincronización.</div></div>
         </div>
       </aside>
     </section>
@@ -409,63 +395,184 @@
     </footer>
   </main>
 
-  <div class="demo-banner"><b>PROTOTIPO FUNCIONAL</b><span>Los botones abren los monitores reales.</span></div>
+  <div class="demo-banner" id="dataBanner"><b>CONEXIÓN</b><span>Comprobando resúmenes públicos…</span></div>
 
   <script>
     const PRESS_URL = 'https://smoralesm07-source.github.io/Monitor/';
     const LEG_URL = 'https://smoralesm07-source.github.io/Monitor-Legislativo/';
-    const PRESS_SUMMARY = PRESS_URL + 'resumen.json';
-    const LEG_SUMMARY = LEG_URL + 'resumen.json';
+    const SOURCES = {
+      press: PRESS_URL + 'resumen.json',
+      leg: LEG_URL + 'resumen.json'
+    };
+
+    const $ = id => document.getElementById(id);
+    const number = value => Number.isFinite(Number(value)) ? Number(value) : 0;
+    const safe = value => String(value ?? '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+    }[c]));
 
     function setDateTime(){
       const now = new Date();
-      document.getElementById('longDate').textContent = new Intl.DateTimeFormat('es-CL',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(now);
-      document.getElementById('lastSync').textContent = `hoy, ${new Intl.DateTimeFormat('es-CL',{hour:'2-digit',minute:'2-digit',hour12:false}).format(now)}`;
+      $('longDate').textContent = new Intl.DateTimeFormat('es-CL',{
+        weekday:'long',day:'numeric',month:'long',year:'numeric'
+      }).format(now);
       const h = now.getHours();
-      document.getElementById('greeting').textContent = `${h < 12 ? 'Buenos días' : h < 20 ? 'Buenas tardes' : 'Buenas noches'}, Sebastián`;
+      $('greeting').textContent = `${h < 12 ? 'Buenos días' : h < 20 ? 'Buenas tardes' : 'Buenas noches'}, Sebastián`;
+    }
+
+    function formatDate(value, withTime=true){
+      if(!value) return 'sin fecha';
+      const date = new Date(value);
+      if(Number.isNaN(date.getTime())) return String(value);
+      return new Intl.DateTimeFormat('es-CL', withTime
+        ? {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}
+        : {day:'numeric',month:'short'}
+      ).format(date);
     }
 
     async function fetchJSON(url){
-      const response = await fetch(url,{cache:'no-store'});
-      if(!response.ok) throw new Error('Resumen no disponible');
-      return response.json();
+      const response = await fetch(`${url}?v=${Date.now()}`, {cache:'no-store'});
+      if(!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      if(!data || typeof data !== 'object') throw new Error('JSON inválido');
+      return data;
     }
 
-    async function syncLiveData(){
-      document.getElementById('refreshBtn').textContent='↻  Actualizando…';
-      try{
-        const results = await Promise.allSettled([fetchJSON(PRESS_SUMMARY),fetchJSON(LEG_SUMMARY)]);
-        const press = results[0].status === 'fulfilled' ? results[0].value : null;
-        const leg = results[1].status === 'fulfilled' ? results[1].value : null;
-
-        if(press){
-          const n = Number(press.nuevas_24h ?? press.publicaciones_24h ?? 0);
-          document.getElementById('pressPrimary').textContent=n;
-          document.getElementById('kpiPress').textContent=n;
-          document.getElementById('pressDirect').textContent=press.menciones_uaf ?? press.menciones_directas ?? '—';
-          document.getElementById('pressHigh').textContent=press.prioridad_alta ?? press.relevancia_alta ?? '—';
-        }
-        if(leg){
-          const n = Number(leg.movimientos_recientes ?? 0);
-          document.getElementById('legPrimary').textContent=n;
-          document.getElementById('kpiLeg').textContent=n;
-          document.getElementById('legDirect').textContent=leg.impacto_directo ?? '—';
-          document.getElementById('legUrgent').textContent=leg.con_urgencia ?? '—';
-        }
-        if(press || leg){
-          const p=Number(document.getElementById('kpiPress').textContent)||0;
-          const l=Number(document.getElementById('kpiLeg').textContent)||0;
-          document.getElementById('kpiTotal').textContent=p+l;
-        }
-      }catch(e){
-        console.info('Se mantiene la vista demostrativa:',e.message);
-      }finally{
-        setDateTime();
-        document.getElementById('refreshBtn').textContent='↻  Actualizar';
+    function renderBars(containerId, captionId, series){
+      const container = $(containerId);
+      const caption = $(captionId);
+      const values = Array.isArray(series) && series.length ? series.slice(-7) : [];
+      const max = Math.max(1, ...values.map(x => number(x.n)));
+      container.innerHTML = values.length
+        ? values.map(x => `<i class="bar" title="${safe(x.fecha)} · ${number(x.n)}" style="height:${Math.max(10, Math.round(number(x.n)/max*92))}%"></i>`).join('')
+        : Array.from({length:7},()=>'<i class="bar" style="height:10%;opacity:.25"></i>').join('');
+      if(values.length){
+        caption.innerHTML = `<span>${safe(formatDate(values[0].fecha,false))}</span><span>${safe(formatDate(values.at(-1).fecha,false))}</span>`;
       }
     }
 
-    document.getElementById('refreshBtn').addEventListener('click',syncLiveData);
+    function renderLatest(id, item, fallback){
+      const el = $(id);
+      if(!item || !item.titulo){
+        el.innerHTML = `<strong>${safe(fallback)}</strong>Sin información reciente disponible.`;
+        return;
+      }
+      const title = item.link
+        ? `<a href="${safe(item.link)}" target="_blank" rel="noopener">${safe(item.titulo)}</a>`
+        : safe(item.titulo);
+      el.innerHTML = `<strong>${title}</strong>${safe(item.detalle || '')}`;
+    }
+
+    function renderPress(data){
+      const n = number(data.nuevas_24h);
+      $('pressPrimary').textContent = n;
+      $('kpiPress').textContent = n;
+      $('pressDirect').textContent = number(data.menciones_uaf);
+      $('pressHigh').textContent = number(data.relevancia_alta ?? data.prioridad_alta);
+      $('pressState').textContent = 'Activo';
+      renderBars('pressBars','pressCaption',data.serie_7d);
+      renderLatest('pressLatest', data.ultimo, 'Sin publicaciones recientes');
+    }
+
+    function renderLeg(data){
+      const n = number(data.movimientos_recientes);
+      $('legPrimary').textContent = n;
+      $('kpiLeg').textContent = n;
+      $('legDirect').textContent = number(data.impacto_directo);
+      $('legUrgent').textContent = number(data.con_urgencia);
+      $('legState').textContent = 'Activo';
+      renderBars('legBars','legCaption',data.serie_7d);
+      renderLatest('legLatest', data.ultimo, 'Sin movimientos recientes');
+    }
+
+    const severityRank = {alta:3, media:2, info:1};
+
+    function renderAlerts(press, leg){
+      const alerts = [
+        ...(Array.isArray(press?.alertas) ? press.alertas : []),
+        ...(Array.isArray(leg?.alertas) ? leg.alertas : [])
+      ].sort((a,b)=>(severityRank[b.severidad]||0)-(severityRank[a.severidad]||0)).slice(0,5);
+
+      if(!alerts.length){
+        $('alertList').innerHTML = `<div class="alert-item"><i class="severity info"></i><div class="alert-copy"><strong>Sin señales integradas disponibles</strong><span>Revisa que ambos resumen.json hayan sido publicados.</span></div><span class="alert-source">SISTEMA</span></div>`;
+        return;
+      }
+      $('alertList').innerHTML = alerts.map(a => {
+        const tag = a.link ? 'a' : 'div';
+        const href = a.link ? ` href="${safe(a.link)}" target="_blank" rel="noopener"` : '';
+        const cls = a.severidad === 'alta' ? 'high' : a.severidad === 'media' ? 'medium' : 'info';
+        return `<${tag} class="alert-item"${href}><i class="severity ${cls}"></i><div class="alert-copy"><strong>${safe(a.titulo)}</strong><span>${safe(a.detalle)}</span></div><span class="alert-source">${safe(a.fuente || 'SISTEMA')}</span></${tag}>`;
+      }).join('');
+    }
+
+    function renderActivity(press, leg){
+      const activity = [
+        ...(Array.isArray(press?.actividad) ? press.actividad.map(x=>({...x,source:'Prensa'})) : []),
+        ...(Array.isArray(leg?.actividad) ? leg.actividad.map(x=>({...x,source:'Legislativo'})) : [])
+      ].sort((a,b)=>new Date(b.fecha||0)-new Date(a.fecha||0)).slice(0,5);
+
+      if(!activity.length){
+        $('activityTimeline').innerHTML = `<div class="event"><div class="event-time">—</div><div class="event-copy">Sin actividad reciente disponible.</div></div>`;
+        return;
+      }
+      $('activityTimeline').innerHTML = activity.map(x =>
+        `<div class="event"><div class="event-time">${safe(formatDate(x.fecha,true))}</div><div class="event-copy"><b>${safe(x.source)}:</b> ${safe(x.texto)}</div></div>`
+      ).join('');
+    }
+
+    function newestDate(press, leg){
+      const dates = [press?.generado, leg?.generado].map(x=>new Date(x)).filter(x=>!Number.isNaN(x.getTime()));
+      return dates.length ? new Date(Math.max(...dates)) : null;
+    }
+
+    function renderGlobal(press, leg){
+      const total = number(press?.nuevas_24h) + number(leg?.movimientos_recientes);
+      const high = number(press?.relevancia_alta ?? press?.prioridad_alta) + number(leg?.prioridad_alta);
+      $('kpiTotal').textContent = total;
+      $('kpiHigh').textContent = high;
+      $('kpiTotalNote').textContent = 'Prensa 24 h + movimientos legislativos 7 días';
+      renderAlerts(press, leg);
+      renderActivity(press, leg);
+
+      const newest = newestDate(press, leg);
+      $('lastSync').textContent = newest ? formatDate(newest.toISOString(), true) : 'sin fecha';
+      const available = [press, leg].filter(Boolean).length;
+      $('monitorStatus').textContent = `${available} de 2 monitores conectados`;
+      $('heroStatus').textContent = available === 2
+        ? `Vista actualizada: ${number(press.nuevas_24h)} publicaciones en 24 horas y ${number(leg.movimientos_recientes)} movimientos legislativos en 7 días.`
+        : 'La vista está parcialmente conectada. Revisa el monitor cuyo resumen aún no se publica.';
+      $('dataBanner').innerHTML = available === 2
+        ? '<b>DATOS REALES</b><span>Ambos resúmenes están conectados.</span>'
+        : `<b>CONEXIÓN PARCIAL</b><span>${available} de 2 resúmenes disponibles.</span>`;
+      if(available === 2){
+        setTimeout(()=>$('dataBanner').style.display='none', 4200);
+      }
+    }
+
+    async function syncLiveData(){
+      $('refreshBtn').textContent='↻  Actualizando…';
+      const [pResult, lResult] = await Promise.allSettled([
+        fetchJSON(SOURCES.press),
+        fetchJSON(SOURCES.leg)
+      ]);
+      const press = pResult.status === 'fulfilled' ? pResult.value : null;
+      const leg = lResult.status === 'fulfilled' ? lResult.value : null;
+
+      if(press) renderPress(press);
+      else {
+        $('pressState').textContent = 'Sin resumen';
+        $('pressPrimary').textContent = '—';
+      }
+      if(leg) renderLeg(leg);
+      else {
+        $('legState').textContent = 'Sin resumen';
+        $('legPrimary').textContent = '—';
+      }
+      renderGlobal(press, leg);
+      $('refreshBtn').textContent='↻  Actualizar';
+    }
+
+    $('refreshBtn').addEventListener('click', syncLiveData);
     setDateTime();
     syncLiveData();
   </script>
