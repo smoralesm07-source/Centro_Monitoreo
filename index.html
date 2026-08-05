@@ -268,10 +268,26 @@
       height:34px;border-bottom:1px solid var(--line-soft);display:flex;align-items:center;justify-content:space-between;gap:10px
     }
     .panel-head h3{font-size:11.5px;margin:0;display:flex;align-items:center;gap:7px}
-    .panel-meta{font-size:9px;color:var(--muted)}
+    .panel-meta{font-size:9px;color:var(--muted);white-space:nowrap}
     .signal-list,.activity-list{display:grid}
+    .signal-list{max-height:196px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#d5dee8 transparent}
+    .signal-list::-webkit-scrollbar{width:6px}
+    .signal-list::-webkit-scrollbar-thumb{background:#d5dee8;border-radius:99px}
+    .signal-list::-webkit-scrollbar-track{background:transparent}
+
+    /* Encabezado de grupo dentro de la lista de señales */
+    .signal-group{
+      display:flex;align-items:center;gap:7px;padding:7px 1px 3px;
+      font-size:8.5px;font-weight:850;letter-spacing:.055em;text-transform:uppercase;color:var(--muted)
+    }
+    .signal-group:first-child{padding-top:4px}
+    .signal-group::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+    .signal-group em{font-style:normal;font-weight:800;letter-spacing:0;text-transform:none;color:var(--muted-2)}
+    .leg-domain .signal-group.n1{color:var(--leg)}
+    .leg-domain .signal-group.n2{color:#8479d6}
+
     .signal{
-      min-width:0;display:grid;grid-template-columns:9px 38px minmax(0,1fr) auto;
+      min-width:0;display:grid;grid-template-columns:9px 66px minmax(0,1fr) auto;
       gap:7px;align-items:center;border-bottom:1px solid #eef2f6;padding:5.5px 1px;font-size:9px
     }
     .signal:last-child{border-bottom:0}
@@ -279,9 +295,11 @@
     .severity.alta{background:var(--red)}
     .severity.media{background:var(--orange)}
     .severity.info{background:var(--blue-info)}
-    .level{font-weight:760;text-transform:capitalize}
+    .level{font-weight:760;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#4a5a72}
+    .press-domain .signal.rel-mencion .level{color:var(--press)}
+    .leg-domain .signal .level{font-variant-numeric:tabular-nums}
     .signal-title{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#30415a}
-    .signal-time{color:var(--muted);font-variant-numeric:tabular-nums;min-width:76px;text-align:right;white-space:nowrap}
+    .signal-time{color:var(--muted);font-variant-numeric:tabular-nums;min-width:78px;text-align:right;white-space:nowrap}
     .empty-row{padding:12px 2px;font-size:10px;color:var(--muted)}
 
     .activity{
@@ -339,6 +357,8 @@
       .chart-zone{margin-top:10px}
       .strategy{grid-column:1;margin-top:9px;grid-template-columns:1fr}
       .open-monitor{min-width:100%;justify-content:space-between}
+      .signal{grid-template-columns:9px 58px minmax(0,1fr) auto}
+      .signal-list{max-height:none}
       .footer{padding:0 10px}.footer-right{display:none}
     }
   </style>
@@ -462,7 +482,7 @@
           </article>
 
           <article class="compact-panel">
-            <header class="panel-head"><h3>⚑ Señales prioritarias — Prensa</h3><span class="panel-meta" id="pressSignalCount">0 señales</span></header>
+            <header class="panel-head"><h3>⚑ Últimas noticias vinculadas a la UAF</h3><span class="panel-meta" id="pressSignalCount">—</span></header>
             <div class="signal-list" id="pressSignals"><div class="empty-row">Esperando datos…</div></div>
           </article>
 
@@ -544,7 +564,7 @@
           </article>
 
           <article class="compact-panel">
-            <header class="panel-head"><h3>⚑ Señales prioritarias — Legislativo</h3><span class="panel-meta" id="legSignalCount">0 señales</span></header>
+            <header class="panel-head"><h3>⚑ Movimientos por nivel de impacto</h3><span class="panel-meta" id="legSignalCount">—</span></header>
             <div class="signal-list" id="legSignals"><div class="empty-row">Esperando datos…</div></div>
           </article>
 
@@ -582,9 +602,16 @@
     function fmtDate(value, mode='time'){
       const date = parseDate(value);
       if(!date) return '—';
-      if(mode === 'day') return new Intl.DateTimeFormat('es-CL',{day:'numeric',month:'short',timeZone:'America/Santiago'}).format(date);
-      if(mode === 'short') return new Intl.DateTimeFormat('es-CL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'America/Santiago'}).format(date);
-      return new Intl.DateTimeFormat('es-CL',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'America/Santiago'}).format(date);
+      const tz = 'America/Santiago';
+      if(mode === 'day') return new Intl.DateTimeFormat('es-CL',{day:'numeric',month:'short',timeZone:tz}).format(date);
+      if(mode === 'short') return new Intl.DateTimeFormat('es-CL',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz}).format(date);
+      if(mode === 'pub'){
+        const d = new Intl.DateTimeFormat('es-CL',{day:'numeric',month:'short',timeZone:tz}).format(date);
+        const t = new Intl.DateTimeFormat('es-CL',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz}).format(date);
+        return `${d} · ${t}`;
+      }
+      if(mode === 'full') return new Intl.DateTimeFormat('es-CL',{dateStyle:'long',timeStyle:'short',timeZone:tz}).format(date);
+      return new Intl.DateTimeFormat('es-CL',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz}).format(date);
     }
 
     async function fetchJSON(url){
@@ -663,36 +690,147 @@
       return v === 'alta' ? 'alta' : v === 'media' ? 'media' : 'info';
     }
 
-    function recentAlerts(alerts){
+    function sortByDate(alerts){
       return (Array.isArray(alerts) ? [...alerts] : [])
         .sort((a,b)=>{
           const da = parseDate(a?.fecha);
           const db = parseDate(b?.fecha);
           return (db?.getTime() || 0) - (da?.getTime() || 0);
-        })
-        .slice(0,4);
+        });
     }
 
-    function renderSignals(containerId, countId, alerts){
-      const container = $(containerId);
-      const list = recentAlerts(alerts);
-      $(countId).textContent = list.length
-        ? `${list.length} más ${list.length === 1 ? 'reciente' : 'recientes'}`
-        : 'Sin alertas';
+    /* ---------- Prensa: cercanía de cada publicación con la UAF ----------
+       El resumen nuevo trae el campo `relacion`. Si el monitor todavía
+       publica el formato anterior, se deduce del texto y la severidad. */
+    const REL_SHORT = {mencion:'Mención UAF', contexto:'Contexto LA/FT', sector:'Sujeto obligado'};
+    const REL_LONG = {
+      mencion:'Mención directa a la UAF',
+      contexto:'Contexto LA/FT validado',
+      sector:'Sujeto obligado mencionado'
+    };
+    const REL_ORDER = ['mencion','contexto','sector'];
+
+    function relacionUAF(item){
+      const declared = String(item?.relacion || '').toLowerCase();
+      if(REL_SHORT[declared]) return declared;
+      const text = `${item?.titulo || ''} ${item?.detalle || ''} ${item?.relacion_legible || ''}`;
+      if(/\buaf\b|unidad de an[áa]lisis financiero/i.test(text)) return 'mencion';
+      const severity = severityClass(item?.severidad);
+      if(severity === 'alta') return 'mencion';
+      if(severity === 'media') return 'contexto';
+      return 'sector';
+    }
+
+    function pressHighlights(alerts){
+      const ordered = sortByDate(alerts);
+      const picked = [];
+      const seen = new Set();
+      for(const group of REL_ORDER){
+        for(const item of ordered){
+          if(picked.length >= 3) break;
+          if(seen.has(item) || relacionUAF(item) !== group) continue;
+          picked.push(item);
+          seen.add(item);
+        }
+        if(picked.length >= 3) break;
+      }
+      return picked;
+    }
+
+    /* ---------- Legislativo: nivel de la cartera ----------
+       El resumen nuevo trae `nivel`. En el formato anterior el nivel
+       viajaba dentro de `detalle` ("… · Nivel 1 · …"). */
+    function nivelDe(item){
+      const declared = Number(item?.nivel);
+      if([1,2,3].includes(declared)) return declared;
+      const text = `${item?.nivel_legible || ''} ${item?.grupo || ''} ${item?.detalle || ''}`;
+      const match = text.match(/nivel\s*([123])/i);
+      return match ? Number(match[1]) : 0;
+    }
+
+    function signalRow(item, label, timeText, tooltip, extraClass=''){
+      const severity = severityClass(item.severidad);
+      const content = `
+        <span class="severity ${severity}"></span>
+        <span class="level" title="${esc(label)}">${esc(label)}</span>
+        <span class="signal-title" title="${esc(tooltip)}">${esc(item.titulo || 'Señal detectada')}</span>
+        <span class="signal-time" title="${item.fecha ? esc(fmtDate(item.fecha,'full')) : ''}">${esc(timeText)}</span>`;
+      const cls = `signal ${extraClass}`.trim();
+      return item.link
+        ? `<a class="${cls}" href="${esc(item.link)}" target="_blank" rel="noopener">${content}</a>`
+        : `<div class="${cls}">${content}</div>`;
+    }
+
+    function renderPressSignals(alerts){
+      const container = $('pressSignals');
+      const list = pressHighlights(alerts);
+
       if(!list.length){
-        container.innerHTML = '<div class="empty-row">Sin señales prioritarias disponibles.</div>';
+        $('pressSignalCount').textContent = 'Sin noticias';
+        container.innerHTML = '<div class="empty-row">Sin publicaciones vinculadas a la UAF en el período.</div>';
         return;
       }
+
+      const directas = list.filter(x=>relacionUAF(x) === 'mencion').length;
+      $('pressSignalCount').textContent = directas
+        ? `${list.length} recientes · ${directas} con mención directa`
+        : `${list.length} recientes · sin mención directa`;
+
       container.innerHTML = list.map(item=>{
-        const severity = severityClass(item.severidad);
-        const content = `
-          <span class="severity ${severity}"></span>
-          <span class="level">${esc(severity)}</span>
-          <span class="signal-title" title="${esc(item.detalle || item.titulo || '')}">${esc(item.titulo || 'Señal detectada')}</span>
-          <span class="signal-time" title="${esc(item.detalle || '')}">${item.fecha ? esc(fmtDate(item.fecha,'short')) : '—'}</span>`;
-        return item.link
-          ? `<a class="signal" href="${esc(item.link)}" target="_blank" rel="noopener">${content}</a>`
-          : `<div class="signal">${content}</div>`;
+        const rel = relacionUAF(item);
+        const fecha = item.fecha
+          ? fmtDate(item.fecha,'pub')
+          : (item.fecha_legible || '—');
+        const tooltip = [item.detalle, REL_LONG[rel]].filter(Boolean).join(' — ');
+        return signalRow(item, REL_SHORT[rel], fecha, tooltip, `rel-${rel}`);
+      }).join('');
+    }
+
+    function renderLegSignals(alerts){
+      const container = $('legSignals');
+      const ordered = sortByDate(alerts);
+      const grupos = [1,2].map(nivel=>({
+        nivel,
+        items: ordered.filter(x=>nivelDe(x) === nivel).slice(0,3)
+      }));
+      const total = grupos.reduce((acc,g)=>acc+g.items.length,0);
+
+      // El resumen antiguo puede no traer nivel: se muestran los más recientes.
+      if(!total){
+        const recientes = ordered.slice(0,4);
+        $('legSignalCount').textContent = recientes.length ? `${recientes.length} recientes` : 'Sin alertas';
+        container.innerHTML = recientes.length
+          ? `<div class="signal-group">Movimientos recientes <em>sin nivel informado</em></div>` +
+            recientes.map(item=>signalRow(
+              item,
+              item.boletin ? String(item.boletin) : severityClass(item.severidad),
+              item.fecha ? fmtDate(item.fecha,'day') : (item.fecha_legible || '—'),
+              item.detalle || ''
+            )).join('')
+          : '<div class="empty-row">Sin movimientos disponibles.</div>';
+        return;
+      }
+
+      const etiquetas = {
+        1:'Nivel 1 · Impacto en la Ley 19.913',
+        2:'Nivel 2 · Perímetro regulatorio'
+      };
+      $('legSignalCount').textContent =
+        `${grupos[0].items.length} nivel 1 · ${grupos[1].items.length} nivel 2`;
+
+      container.innerHTML = grupos.map(grupo=>{
+        const cabecera = `<div class="signal-group n${grupo.nivel}">${esc(etiquetas[grupo.nivel])}${
+          grupo.items.length ? '' : ' <em>sin movimientos</em>'
+        }</div>`;
+        const filas = grupo.items.map(item=>{
+          const etiqueta = item.boletin
+            ? String(item.boletin)
+            : (String(item.detalle || '').match(/Boletín\s+([\d-]+)/i)?.[1] || `N${grupo.nivel}`);
+          const fecha = item.fecha ? fmtDate(item.fecha,'day') : (item.fecha_legible || '—');
+          const tooltip = [item.detalle, item.nivel_legible].filter(Boolean).join(' — ');
+          return signalRow(item, etiqueta, fecha, tooltip);
+        }).join('');
+        return cabecera + filas;
       }).join('');
     }
 
@@ -726,14 +864,8 @@
     function renderStrategy(id, insights){
       $(id).innerHTML = insights.map(text=>`<li>${esc(text)}</li>`).join('');
     }
-    function latestAlertText(data, domain){
-      const alerts = recentAlerts(data?.alertas);
-      if(alerts.length){
-        const top = alerts[0];
-        const sev = String(top.severidad || 'info').toLowerCase();
-        const sevLabel = sev === 'alta' ? 'Alerta alta' : sev === 'media' ? 'Alerta media' : 'Novedad';
-        return `${sevLabel}: ${top.titulo || 'Señal detectada'}`;
-      }
+
+    function seriesHint(data){
       const series = normalizeSeries(data?.serie_7d);
       if(series.length >= 2){
         const latest = series[series.length - 1].n;
@@ -743,9 +875,33 @@
           return `Último día con actividad superior al promedio reciente (${latest}).`;
         }
       }
-      return domain === 'press'
-        ? 'Sin alertas críticas; revisar el monitoreo para novedades y cobertura reciente.'
-        : 'Sin alertas críticas; revisar el monitoreo para cambios de etapa o urgencia.';
+      return '';
+    }
+
+    function pressAlertText(data){
+      const top = pressHighlights(data?.alertas)[0];
+      if(top){
+        const rel = relacionUAF(top);
+        const fecha = top.fecha ? fmtDate(top.fecha,'pub') : (top.fecha_legible || '');
+        const medio = top.medio || String(top.detalle || '').split('·')[0].trim();
+        const origen = [medio, fecha].filter(Boolean).join(' · ');
+        return `${REL_LONG[rel]}${origen ? ` (${origen})` : ''}: ${top.titulo || 'Publicación detectada'}`;
+      }
+      return seriesHint(data) || 'Sin publicaciones vinculadas a la UAF; revisar el monitor para cobertura general.';
+    }
+
+    function legAlertText(data){
+      const ordered = sortByDate(data?.alertas);
+      const top = ordered.find(x=>nivelDe(x) === 1) || ordered.find(x=>nivelDe(x) === 2) || ordered[0];
+      if(top){
+        const nivel = nivelDe(top);
+        const prefijo = nivel ? `Nivel ${nivel}` : 'Movimiento reciente';
+        const boletin = top.boletin ? `Boletín ${top.boletin}` : '';
+        const fecha = top.fecha ? fmtDate(top.fecha,'day') : (top.fecha_legible || '');
+        const origen = [boletin, fecha].filter(Boolean).join(' · ');
+        return `${prefijo}${origen ? ` (${origen})` : ''}: ${top.titulo || 'Proyecto en seguimiento'}`;
+      }
+      return seriesHint(data) || 'Sin movimientos recientes; revisar el monitor para cambios de etapa o urgencia.';
     }
 
     function renderAlertBox(id, text){
@@ -761,8 +917,8 @@
       $('pressState').textContent = 'En tiempo real';
       renderChart('press',data.serie_7d,'press');
       renderStrategy('pressStrategy',pressInsights(data));
-      renderAlertBox('pressAlertText', latestAlertText(data,'press'));
-      renderSignals('pressSignals','pressSignalCount',data.alertas);
+      renderAlertBox('pressAlertText', pressAlertText(data));
+      renderPressSignals(data.alertas);
     }
 
     function renderLeg(data){
@@ -774,8 +930,8 @@
       $('legState').textContent = 'En tiempo real';
       renderChart('leg',data.serie_7d,'leg');
       renderStrategy('legStrategy',legInsights(data));
-      renderAlertBox('legAlertText', latestAlertText(data,'leg'));
-      renderSignals('legSignals','legSignalCount',data.alertas);
+      renderAlertBox('legAlertText', legAlertText(data));
+      renderLegSignals(data.alertas);
     }
 
     function renderFailure(domain){
@@ -785,6 +941,7 @@
         '<li>No fue posible cargar el archivo resumen.json. El monitor completo sigue disponible mediante el botón de acceso.</li>';
       const alertId = isPress ? 'pressAlertText' : 'legAlertText';
       $(alertId).textContent = 'Resumen no disponible en este momento. Utiliza el botón Abrir monitor para revisar la fuente completa.';
+      $(isPress ? 'pressSignalCount' : 'legSignalCount').textContent = 'Sin datos';
       $(isPress ? 'pressSignals' : 'legSignals').innerHTML =
         '<div class="empty-row">Resumen no disponible.</div>';
     }
