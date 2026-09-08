@@ -110,16 +110,47 @@
     const factRows=rows=>rows.map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${v}</dd></div>`).join('');
     const coverageRow=(k,v,tone)=>`<div class="coverage-row"><span>${esc(k)}</span><b class="${tone}">${esc(v)}</b></div>`;
 
+    async function ensureSession(){
+      const {data}=await supabase.auth.getSession();
+      let session=data.session;
+      if(session){
+        const {data:userData,error:userError}=await supabase.auth.getUser();
+        if(userError||!userData?.user){
+          const {data:refreshed,error:refreshError}=await supabase.auth.refreshSession();
+          session=refreshError?null:refreshed.session;
+          if(refreshError)await supabase.auth.signOut({scope:'local'});
+        }
+      }
+      state.session=session;
+      renderAuth();
+      return session;
+    }
+
     async function init(){
-      const {data}=await supabase.auth.getSession();state.session=data.session;renderAuth();
+      const session=await ensureSession();
       supabase.auth.onAuthStateChange((_e,s)=>{state.session=s;renderAuth();if(s)load();});
-      if(state.session)load();
+      if(session)load();
     }
     function renderAuth(){const logged=!!state.session;$('loginView').classList.toggle('hidden',logged);$('dashboard').classList.toggle('hidden',!logged);$('refreshBtn').classList.toggle('hidden',!logged);$('signOutBtn').classList.toggle('hidden',!logged)}
     $('signInBtn').onclick=async()=>{const btn=$('signInBtn');btn.disabled=true;btn.textContent='Redirigiendo…';$('loginError').classList.remove('show');const {error}=await supabase.auth.signInWithOAuth({provider:'azure',options:{scopes:'email',redirectTo:location.href.split('#')[0]}});if(error){$('loginError').innerHTML=`<b>No fue posible iniciar sesión.</b> ${esc(error.message)}`;$('loginError').classList.add('show');btn.disabled=false;btn.textContent='Ingresar con Microsoft'}};
     $('signOutBtn').onclick=()=>supabase.auth.signOut();$('refreshBtn').onclick=()=>load();
 
-    async function load(){if(!state.session||state.busy)return;state.busy=true;$('refreshBtn').disabled=true;$('refreshBtn').textContent='Actualizando…';$('dashboard').classList.add('loading');try{const r=await fetch(`${SUPABASE_URL}/functions/v1/atlas-infra-metrics`,{method:'POST',headers:{apikey:SUPABASE_KEY,authorization:`Bearer ${state.session.access_token}`,'content-type':'application/json'},body:'{}'});const d=await r.json();if(!r.ok||!d?.ok)throw new Error(d?.detail||d?.error||`HTTP ${r.status}`);state.data=d;render(d);$('errorBanner').classList.remove('show')}catch(e){$('errorBanner').innerHTML=`<b>Telemetría no disponible.</b> ${esc(e?.message||e)}. Se conserva la última vista cargada.`;$('errorBanner').classList.add('show');setLive('degraded')}finally{state.busy=false;$('refreshBtn').disabled=false;$('refreshBtn').textContent='Actualizar';$('dashboard').classList.remove('loading')}}
+    async function callMetrics(session){
+      const r=await fetch(`${SUPABASE_URL}/functions/v1/stack-monitor-metrics`,{method:'POST',headers:{apikey:SUPABASE_KEY,authorization:`Bearer ${session.access_token}`,'content-type':'application/json'},body:'{}'});
+      let d=null;try{d=await r.json()}catch{d={ok:false,error:`HTTP ${r.status}`}}
+      return{r,d};
+    }
+
+    async function requestMetrics(){
+      let result=await callMetrics(state.session);
+      if(result.r.status===401){
+        const {data,error}=await supabase.auth.refreshSession();
+        if(!error&&data.session){state.session=data.session;result=await callMetrics(data.session)}
+      }
+      return result;
+    }
+
+    async function load(){if(!state.session||state.busy)return;state.busy=true;$('refreshBtn').disabled=true;$('refreshBtn').textContent='Actualizando…';$('dashboard').classList.add('loading');try{const {r,d}=await requestMetrics();if(!r.ok||!d?.ok){if(r.status===401){await supabase.auth.signOut({scope:'local'});throw new Error('La sesión expiró. Ingresa nuevamente con Microsoft.')}throw new Error(d?.detail||d?.error||`HTTP ${r.status}`)}state.data=d;render(d);$('errorBanner').classList.remove('show')}catch(e){$('errorBanner').innerHTML=`<b>Telemetría no disponible.</b> ${esc(e?.message||e)}. Se conserva la última vista cargada.`;$('errorBanner').classList.add('show');setLive('degraded')}finally{state.busy=false;$('refreshBtn').disabled=false;$('refreshBtn').textContent='Actualizar';$('dashboard').classList.remove('loading')}}
 
     function setLive(status){const el=$('livePill'),dot=el.querySelector('.dot'),span=el.querySelector('span');dot.className='dot '+(status==='healthy'?'good':status==='degraded'?'bad':'warn');span.textContent=status==='healthy'?'telemetría viva':status==='degraded'?'telemetría degradada':'telemetría parcial'}
     function render(d){
