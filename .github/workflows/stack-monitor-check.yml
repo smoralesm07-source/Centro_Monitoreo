@@ -34,5 +34,9 @@ jobs:
       - name: Verificar estructura mínima
         run: |
           grep -q '<title>Stack Monitor' stack-monitor/index.html
-          grep -q 'atlas-infra-metrics' stack-monitor/index.html
+          grep -q 'stack-monitor-metrics' stack-monitor/index.html
           grep -q 'Ingresar con Microsoft' stack-monitor/index.html
+          if grep -q 'atlas-infra-metrics' stack-monitor/index.html; then
+            echo '::error::Stack Monitor no debe depender del endpoint heredado de ATLAS'
+            exit 1
+          fi
