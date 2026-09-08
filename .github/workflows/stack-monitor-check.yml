@@ -1,0 +1,38 @@
+name: Validar Stack Monitor
+
+on:
+  pull_request:
+    paths:
+      - 'stack-monitor/**'
+      - '.github/workflows/stack-monitor-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verificar secretos administrativos
+        run: |
+          if grep -R -E 'SUPABASE_SERVICE_ROLE_KEY|service_role_key|CLOUDFLARE_API_TOKEN' stack-monitor; then
+            echo '::error::Se detectó una referencia a secretos administrativos en el frontend'
+            exit 1
+          fi
+      - name: Verificar JavaScript embebido
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const html = fs.readFileSync('stack-monitor/index.html', 'utf8');
+          const match = html.match(/<script type="module">([\s\S]*?)<\/script>/);
+          if (!match) throw new Error('No se encontró el módulo JavaScript');
+          fs.writeFileSync('/tmp/stack-monitor.mjs', match[1]);
+          NODE
+          node --check /tmp/stack-monitor.mjs
+      - name: Verificar estructura mínima
+        run: |
+          grep -q '<title>Stack Monitor' stack-monitor/index.html
+          grep -q 'atlas-infra-metrics' stack-monitor/index.html
+          grep -q 'Ingresar con Microsoft' stack-monitor/index.html
