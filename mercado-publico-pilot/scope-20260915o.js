@@ -1,0 +1,16 @@
+(function(){
+'use strict';
+const BUILD='20260915o-scope-2023';
+const css=`.mp-o-scope{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:11px;padding:9px 11px;border:1px solid #28584e;background:rgba(45,212,167,.065);border-radius:9px;color:var(--ink2);font-size:10px;line-height:1.4}.mp-o-scope strong{color:var(--accent)}.mp-o-scope .pill{margin-left:auto}.mp-o-fixed{opacity:.8}`;
+const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
+function patchSearch(){const box=document.getElementById('mpKSearch');if(!box)return false;const p=box.querySelector('p');if(p)p.innerHTML='Busca por proveedor, servicio público, producto/ítem o licitación. <strong>La grilla siempre muestra licitaciones relacionadas.</strong>';
+ if(!document.getElementById('mpOScope')){const x=document.createElement('div');x.id='mpOScope';x.className='mp-o-scope';x.innerHTML='<strong>Ámbito de consulta: 2023–actualidad</strong><span>Los datos anteriores se conservan fuera de la vista operativa. La cobertura reciente sigue ampliándose y se informa explícitamente.</span><span class="pill ok">2023 → hoy</span>';const modes=box.querySelector('.mp-k-modes');(modes||p)?.insertAdjacentElement('beforebegin',x)}
+ const from=document.getElementById('mpKYFrom');if(from){[...from.options].forEach(o=>{if(o.value===''||Number(o.value)<2023)o.remove()});if(!from.value||Number(from.value)<2023)from.value='2023';const lab=from.closest('label');if(lab&&lab.firstChild)lab.firstChild.textContent='Desde '}
+ const to=document.getElementById('mpKYTo');if(to){[...to.options].forEach(o=>{if(o.value&&Number(o.value)<2023)o.remove()})}
+ const cov=document.getElementById('mpKCov');if(cov&&!cov.dataset.scopePatched){cov.dataset.scopePatched='1';const obs=new MutationObserver(()=>{if(!cov.textContent.includes('Ámbito 2023'))cov.insertAdjacentHTML('afterbegin','<strong>Ámbito 2023–actualidad.</strong> ')});obs.observe(cov,{childList:true,subtree:true});if(!cov.textContent.includes('Ámbito 2023'))cov.insertAdjacentHTML('afterbegin','<strong>Ámbito 2023–actualidad.</strong> ')}
+ return true}
+function patchBase(){document.querySelectorAll('input[type="date"]').forEach(x=>{x.min='2023-01-01';if(x.value&&x.value<'2023-01-01')x.value='2023-01-01'});const bp=document.querySelector('.brand p');if(bp&&/piloto|búsqueda|Mercado/i.test(bp.textContent||''))bp.textContent='Piloto independiente · Mercado Público 2023–actualidad';}
+function patchDossier(){document.querySelectorAll('#mpMDossier .mp-m-head').forEach(h=>{if(h.querySelector('.mp-o-dossier-scope'))return;const d=document.createElement('div');d.className='mp-o-dossier-scope tiny';d.style.marginTop='5px';d.textContent='Dossier calculado exclusivamente sobre la cobertura indexada 2023–actualidad.';h.appendChild(d)})}
+function run(){patchBase();patchSearch();patchDossier()}
+const mo=new MutationObserver(run);mo.observe(document.documentElement,{subtree:true,childList:true});run();setTimeout(run,500);setTimeout(run,1800);setTimeout(()=>mo.disconnect(),120000);window.mpScopeBuild=BUILD;
+})();
