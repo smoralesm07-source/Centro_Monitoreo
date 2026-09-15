@@ -12,16 +12,16 @@
 </style>
 </head>
 <body>
-<div id="app"><div class="shell"><div class="card login"><div class="brand"><div class="mark">MP</div><div><h1>Mercado Público</h1><p>Piloto independiente · estándar visual ATLAS</p></div></div><h2>Iniciando explorador</h2><p class="muted">UNIFIED-20260915-I · cargando una única capa de búsqueda…</p><div class="note">Proveedor, organismo, producto y licitación alimentan siempre una grilla de licitaciones relacionadas.</div></div></div></div>
+<div id="app"><div class="shell"><div class="card login"><div class="brand"><div class="mark">MP</div><div><h1>Mercado Público</h1><p>Piloto independiente · estándar visual ATLAS</p></div></div><h2>Iniciando explorador</h2><p class="muted">UNIFIED-20260915-J · cargando búsqueda, sugerencias y comparación…</p><div class="note">Proveedor, organismo, producto y licitación alimentan siempre una grilla de licitaciones relacionadas.</div></div></div></div>
 <noscript><div class="fatal">Este piloto necesita JavaScript habilitado.</div></noscript>
 <script>
 (function(){
- const BUILD='UNIFIED-20260915-I';
+ const BUILD='UNIFIED-20260915-J';
  const base='../mercado-publico-pilot/app-20260915c.js?u='+Date.now();
- const unified='../mercado-publico-pilot/unified-20260915i.js?u='+Date.now();
+ const unified='../mercado-publico-pilot/unified-20260915j.js?u='+Date.now();
  function fail(m){document.getElementById('app').innerHTML='<div class="shell"><div class="fatal"><strong>No fue posible cargar el piloto.</strong><div style="margin-top:8px">'+String(m).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))+'</div><div class="tiny" style="margin-top:8px">'+BUILD+'</div></div></div>'}
  function inject(js,name){const s=document.createElement('script');s.text=js+'\n//# sourceURL='+name;document.body.appendChild(s)}
- fetch(base,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Interfaz base HTTP '+r.status);return r.text()}).then(js=>{if(!js.includes("const BUILD='20260915c'"))throw new Error('Build base inesperado');inject(js,'mp-base.js');return fetch(unified,{cache:'no-store'})}).then(r=>{if(!r.ok)throw new Error('Explorador unificado HTTP '+r.status);return r.text()}).then(js=>{if(!js.includes("const BUILD='20260915i-unified'"))throw new Error('Build unificado inesperado');inject(js,'mp-unified.js')}).catch(e=>fail(e?.message||e));
+ fetch(base,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Interfaz base HTTP '+r.status);return r.text()}).then(js=>{if(!js.includes("const BUILD='20260915c'"))throw new Error('Build base inesperado');inject(js,'mp-base.js');return fetch(unified,{cache:'no-store'})}).then(r=>{if(!r.ok)throw new Error('Explorador unificado HTTP '+r.status);return r.text()}).then(js=>{if(!js.includes("const BUILD='20260915j-unified'"))throw new Error('Build unificado inesperado');inject(js,'mp-unified.js')}).catch(e=>fail(e?.message||e));
 })();
 </script>
 </body>
