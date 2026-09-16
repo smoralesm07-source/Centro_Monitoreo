@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - '.github/workflows/mercado-publico-uaf-backfill.yml'
+      - 'tools/mp_uaf_backfill_scan.py'
       - 'mercado-publico-uaf-backfill-trigger.txt'
 
 permissions:
