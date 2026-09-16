@@ -1,10 +1,21 @@
 {
-  "generated_at": "2026-09-16T16:29:11.251409+00:00",
+  "generated_at": "2026-09-16T16:31:07.159397+00:00",
   "scope": "2023-current bulk semester files",
-  "buyer_mp_code": "3299",
+  "identity_rules": {
+    "ocds_buyer_code": "3299",
+    "unit_rut_norm": "619730003",
+    "tender_prefix": "2305-"
+  },
   "buyer_name": "UNIDAD DE ANALISIS FINANCIERO",
   "source_count": 8,
-  "tender_count": 0,
+  "tender_count": 5,
+  "observed_organism_codes": [
+    {
+      "code": "85017",
+      "name": "UNIDAD DE ANALISIS FINANCIERO",
+      "matched_rows": 61
+    }
+  ],
   "source_stats": [
     {
       "year": 2023,
@@ -44,7 +55,7 @@
       "csv_name": "lic_2024-2.csv",
       "csv_uncompressed_bytes": 399367648,
       "rows_seen": 221071,
-      "matched_rows": 0
+      "matched_rows": 47
     },
     {
       "year": 2025,
@@ -84,8 +95,255 @@
       "csv_name": "lic_2026-2.csv",
       "csv_uncompressed_bytes": 248798522,
       "rows_seen": 125814,
-      "matched_rows": 0
+      "matched_rows": 14
     }
   ],
-  "tenders": []
+  "tenders": [
+    {
+      "code": "2305-1-L126",
+      "title": "Servicio de soporte SAS",
+      "description": "El objetivo de este proceso es la contratación de servicios de soporte para SAS ViyA. Lo anterior es producto de un error en el proceso de levantamiento de servicios, el que se produjo al levantar SAS mediante ansible-playbook, lo que arrojó el mensaje “PGpool is not running”. Esto se produjo luego de apagar las máquinas y volver a encenderlas, habiendo sido migradas de ambiente de virtualización.",
+      "status": "Desierta (o art. 3 ó 9 Ley 19.886)",
+      "status_code": "7",
+      "buyer_code_bulk": "85017",
+      "buyer_name": "UNIDAD DE ANALISIS FINANCIERO",
+      "unit_code": "3299",
+      "unit_name": "Unidad de Análisis Financiero",
+      "unit_rut": "61.973.000-3",
+      "unit_region": "Región Metropolitana de Santiago",
+      "publication_date": "2026-02-25",
+      "close_date": "2026-03-06",
+      "creation_date": "2026-02-12",
+      "award_date": "2026-03-12",
+      "procurement_type": "Licitación Pública Menor a 100 UTM (L1)",
+      "source_periods": [
+        "2026-2"
+      ],
+      "item_codes": [
+        "81111805"
+      ],
+      "item_names": [
+        "Mantenimiento y soporte de sistemas propietarios"
+      ],
+      "supplier_ruts": [
+        "770174775"
+      ],
+      "supplier_names": [
+        "CONSULTORIA Y SOFTWARE EN GESTION DE PROYECTOS SPA"
+      ],
+      "selected_supplier_ruts": [],
+      "selected_supplier_names": [],
+      "row_count": 1
+    },
+    {
+      "code": "2305-3-LE26",
+      "title": "SERVICIO DE SOPORTE Y MANTENIMIENTO PREVENTIVO ACM",
+      "description": "La Unidad de Análisis Financiero UAF es un servicio público descentralizado, creado por Ley   N°19.913, con personalidad jurídica y patrimonio propio, que tiene como objetivo prevenir la utilización del sistema financiero y de otros sectores de la actividad económica nacional, para la comisión del delito de lavado o blanqueo de activos y el financiamiento del terrorismo.\r\r\n\r\r\nLas presentes bases tienen por objetivo procurar la contratación de servicios especializados de soporte y mantenimiento evolutivo, orientados a mantener operativa y en óptimas condiciones de funcionamiento el Sistema Integral de Prevención de Lavado de Activos y contra el Financiamiento del Terrorismo, implementado en las tecnologías IBM Case Manager, IBM FileNet e IBM DB2, conforme con los requerimientos descritos y detallados en las presentes bases administrativas, técnicas y anexos respectivos.",
+      "status": "Desierta (o art. 3 ó 9 Ley 19.886)",
+      "status_code": "7",
+      "buyer_code_bulk": "85017",
+      "buyer_name": "UNIDAD DE ANALISIS FINANCIERO",
+      "unit_code": "3299",
+      "unit_name": "Unidad de Análisis Financiero",
+      "unit_rut": "61.973.000-3",
+      "unit_region": "Región Metropolitana de Santiago",
+      "publication_date": "2026-02-18",
+      "close_date": "2026-03-06",
+      "creation_date": "2026-02-18",
+      "award_date": "2026-03-12",
+      "procurement_type": "Licitación Pública Entre 100 y 1000 UTM (LE)",
+      "source_periods": [
+        "2026-2"
+      ],
+      "item_codes": [
+        "81111805"
+      ],
+      "item_names": [
+        "Mantenimiento y soporte de sistemas propietarios"
+      ],
+      "supplier_ruts": [
+        "769629807"
+      ],
+      "supplier_names": [
+        "SOCIEDAD LPA SOLUCIONES CORPORATIVAS EN GESTION DE PROCESOS LIMITADA"
+      ],
+      "selected_supplier_ruts": [],
+      "selected_supplier_names": [],
+      "row_count": 1
+    },
+    {
+      "code": "2305-2-LE26",
+      "title": "SERVICIOS DE SUBSCRIPCIÓN DE LICENCIAMIENTO ADOBE",
+      "description": "Servicios de suscripción dos años licenciamiento Adobe, necesario para otorgar a funcionarios del Servicio de herramientas para la elaboración y gestión de plataformas de estudios y capacitación; así como, para la creación, modificación y gestión de documentos en formato PDF que permita el debido manejo y administración de estos, conforme lo dispuesto en la spresentes bases que se adjuintan.",
+      "status": "Adjudicada",
+      "status_code": "8",
+      "buyer_code_bulk": "85017",
+      "buyer_name": "UNIDAD DE ANALISIS FINANCIERO",
+      "unit_code": "3299",
+      "unit_name": "Unidad de Análisis Financiero",
+      "unit_rut": "61.973.000-3",
+      "unit_region": "Región Metropolitana de Santiago",
+      "publication_date": "2026-02-13",
+      "close_date": "2026-02-26",
+      "creation_date": "2026-02-13",
+      "award_date": "2026-03-06",
+      "procurement_type": "Licitación Pública Entre 100 y 1000 UTM (LE)",
+      "source_periods": [
+        "2026-2"
+      ],
+      "item_codes": [
+        "43232107"
+      ],
+      "item_names": [
+        "Software de edición y creación de páginas Web"
+      ],
+      "supplier_ruts": [
+        "761791702",
+        "763343812",
+        "763674304",
+        "777007807",
+        "79770640K",
+        "885798004"
+      ],
+      "supplier_names": [
+        "COMERCIALIZADORA TELENET LTDA",
+        "COMPUTACION GRAFICA APLICADA Y CIA LTDA",
+        "MICROGEO S A",
+        "SOC INFORMATICA SIGLO 21 LIMITADA",
+        "SOCIEDAD COMERCIAL FORTEZA Y COMPANIA LIMITADA",
+        "TICHILE  REVENTA  DE SOFTWARE Y HARDWARE SPA"
+      ],
+      "selected_supplier_ruts": [
+        "79770640K"
+      ],
+      "selected_supplier_names": [
+        "COMPUTACION GRAFICA APLICADA Y CIA LTDA"
+      ],
+      "row_count": 12
+    },
+    {
+      "code": "2305-2-L124",
+      "title": "Evaluaciones psicolaborales.",
+      "description": "La Unidad de Análisis Financiero requiere contratar evaluaciones psicolaborales para profesionales y técnicos en procesos de selección de personal año 2024, que requieran de esta instancia. \r\nEstas evaluaciones, son una parte importante en los procesos de selección ya que, como resultado, a través de un informe es posible evidenciar el grado de ajuste de cada candidato(a) teniendo como base el descriptor correspondiente y las competencias transversales y específicas definidas.\r\n",
+      "status": "Adjudicada",
+      "status_code": "8",
+      "buyer_code_bulk": "85017",
+      "buyer_name": "UNIDAD DE ANALISIS FINANCIERO",
+      "unit_code": "3299",
+      "unit_name": "Unidad de Análisis Financiero",
+      "unit_rut": "61.973.000-3",
+      "unit_region": "Región Metropolitana de Santiago",
+      "publication_date": "2024-02-27",
+      "close_date": "2024-03-08",
+      "creation_date": "2024-02-20",
+      "award_date": "2024-03-25",
+      "procurement_type": "Licitación Pública Menor a 100 UTM (L1)",
+      "source_periods": [
+        "2024-2"
+      ],
+      "item_codes": [
+        "80111703"
+      ],
+      "item_names": [
+        "Servicios de evaluación de currículum vitae"
+      ],
+      "supplier_ruts": [
+        "144384261",
+        "760410128",
+        "760678686",
+        "761728431",
+        "764484207",
+        "770258510",
+        "770387086",
+        "773837848",
+        "776008206",
+        "778560453",
+        "795333509",
+        "995910306"
+      ],
+      "supplier_names": [
+        "ADISTRA COMERCIAL LIMITADA",
+        "ALTHUS PARTNERS CONSULTORES LIMITADA",
+        "ANGUITA CONSULTORES SPA",
+        "BIRGIT NEVERMANN GRAHL",
+        "EUROFIRMS OUTSOURCING SPA",
+        "MANDOMEDIO.COM S.A.",
+        "ORGANIZACION HUMANA CONSULTORES ASOCIADOS LIMITADA",
+        "SOCIEDAD COMERCIAL Y PUBLICITARIA ALTAVISION LIMITADA",
+        "SOCIEDAD DE PROFESIONALES GRUPO GBE LIMITADA",
+        "SOCIEDAD DE PROFESIONALES OSSANDÓN AUDITORES CONSULTORES LIMITADA",
+        "SOCIEDAD DE PROFESIONALES Y ASESORÍAS EN GESTIÓN DE PERSONAS CDO CONSU",
+        "TACTICA CONSULTORES SPA"
+      ],
+      "selected_supplier_ruts": [
+        "995910306"
+      ],
+      "selected_supplier_names": [
+        "ANGUITA CONSULTORES SPA"
+      ],
+      "row_count": 12
+    },
+    {
+      "code": "2305-1-LE24",
+      "title": "Subscripción de nuevas licencias Adobe",
+      "description": "El objetivo de este proceso de licitación es la contratación de servicios de subscripción de nuevas licencias Adobe que se indican, por un periodo de 2 años.",
+      "status": "Adjudicada",
+      "status_code": "8",
+      "buyer_code_bulk": "85017",
+      "buyer_name": "UNIDAD DE ANALISIS FINANCIERO",
+      "unit_code": "3299",
+      "unit_name": "Unidad de Análisis Financiero",
+      "unit_rut": "61.973.000-3",
+      "unit_region": "Región Metropolitana de Santiago",
+      "publication_date": "2024-02-19",
+      "close_date": "2024-03-04",
+      "creation_date": "2024-02-19",
+      "award_date": "2024-03-13",
+      "procurement_type": "Licitación Pública Entre 100 y 1000 UTM (LE)",
+      "source_periods": [
+        "2024-2"
+      ],
+      "item_codes": [
+        "43232107"
+      ],
+      "item_names": [
+        "Software de edición y creación de páginas Web"
+      ],
+      "supplier_ruts": [
+        "760441651",
+        "763309843",
+        "763674304",
+        "764841514",
+        "765965705",
+        "767994303",
+        "773320136",
+        "776079766",
+        "777007807",
+        "79770640K",
+        "885798004",
+        "89912300K"
+      ],
+      "supplier_names": [
+        "COMERCIALIZADORA SP DIGITAL SPA",
+        "COMERCIALIZADORA TELENET LTDA",
+        "COMPUTACION GRAFICA APLICADA Y CIA LTDA",
+        "FJ IMPORTACIONES SPA",
+        "GEO LOGISTICA S.P.A.",
+        "INGENIERIA Y CONSTRUCCION RICARDO  RODRIGUEZ Y CIA LTDA",
+        "MICROGEO S A",
+        "SERVICIOS DE TECNOLOGIA, EDUCACION, CIENCIA Y ARTE LIMITADA",
+        "SOCIEDAD COMERCIAL ALCA LIMITADA",
+        "SOCIEDAD COMERCIAL FORTEZA Y COMPANIA LIMITADA",
+        "SOLUCIONES TECNOLOGICAS CLEVERTEC LIMITADA",
+        "TICHILE SPA"
+      ],
+      "selected_supplier_ruts": [
+        "763674304"
+      ],
+      "selected_supplier_names": [
+        "SOCIEDAD COMERCIAL FORTEZA Y COMPANIA LIMITADA"
+      ],
+      "row_count": 35
+    }
+  ]
 }
