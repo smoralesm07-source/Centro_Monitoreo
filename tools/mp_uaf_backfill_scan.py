@@ -73,34 +73,28 @@ def process_source(year, semester, url, tenders, source_stats, observed_orgs):
                         "award_date": row.get("FechaAdjudicacion") or "",
                         "procurement_type": row.get("Tipo de Adquisicion") or "",
                         "source_periods": set(),
-                        "item_codes": set(),
-                        "item_names": set(),
-                        "supplier_ruts": set(),
-                        "supplier_names": set(),
-                        "selected_supplier_ruts": set(),
-                        "selected_supplier_names": set(),
+                        "items": {},
+                        "suppliers": {},
                         "row_count": 0,
                     })
                     t["source_periods"].add(f"{year}-{semester}")
                     t["row_count"] += 1
                     item_code = (row.get("CodigoProductoONU") or "").strip()
                     item_name = (row.get("Nombre linea Adquisicion") or row.get("Nombre producto genrico") or "").strip()
-                    if item_code:
-                        t["item_codes"].add(item_code)
-                    if item_name:
-                        t["item_names"].add(item_name)
+                    if item_code or item_name:
+                        ikey = item_code or item_name.lower()
+                        item = t["items"].setdefault(ikey, {"product_code": item_code, "description": item_name, "row_count": 0})
+                        item["row_count"] += 1
                     rut = clean_rut(row.get("RutProveedor"))
                     name_p = (row.get("RazonSocialProveedor") or row.get("NombreProveedor") or "").strip()
-                    if rut:
-                        t["supplier_ruts"].add(rut)
-                    if name_p:
-                        t["supplier_names"].add(name_p)
-                    selected = (row.get("Oferta seleccionada") or "").strip().lower()
-                    if selected == "seleccionada":
-                        if rut:
-                            t["selected_supplier_ruts"].add(rut)
-                        if name_p:
-                            t["selected_supplier_names"].add(name_p)
+                    selected = (row.get("Oferta seleccionada") or "").strip().lower() == "seleccionada"
+                    if rut or name_p:
+                        pkey = rut or name_p.lower()
+                        supplier = t["suppliers"].setdefault(pkey, {"rut_norm": rut, "name": name_p, "selected": False, "offer_rows": 0})
+                        supplier["offer_rows"] += 1
+                        supplier["selected"] = supplier["selected"] or selected
+                        if not supplier["name"] and name_p:
+                            supplier["name"] = name_p
             source_stats.append({
                 "year": year,
                 "semester": semester,
@@ -120,8 +114,9 @@ def serialise(tenders):
     out = []
     for t in tenders.values():
         x = dict(t)
-        for k in ("source_periods", "item_codes", "item_names", "supplier_ruts", "supplier_names", "selected_supplier_ruts", "selected_supplier_names"):
-            x[k] = sorted(x[k])
+        x["source_periods"] = sorted(x["source_periods"])
+        x["items"] = sorted(x["items"].values(), key=lambda z: (z.get("product_code") or "", z.get("description") or ""))
+        x["suppliers"] = sorted(x["suppliers"].values(), key=lambda z: (not z.get("selected", False), z.get("name") or "", z.get("rut_norm") or ""))
         out.append(x)
     out.sort(key=lambda x: (x.get("publication_date") or "", x["code"]), reverse=True)
     return out
