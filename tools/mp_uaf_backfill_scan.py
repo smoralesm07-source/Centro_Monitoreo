@@ -2,15 +2,16 @@
 import csv
 import io
 import json
-import os
 import tempfile
 import urllib.request
 import zipfile
-from collections import defaultdict
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
-TARGET_ORG = "3299"
+TARGET_OCDS_CODE = "3299"
+TARGET_RUT = "619730003"
+TARGET_TENDER_PREFIX = "2305-"
 OUT = Path("mercado-publico-pilot/data/uaf-licitaciones-2023-current.json")
 SOURCES = [(year, semester, f"https://transparenciachc.blob.core.windows.net/lic-da/{year}-{semester}.zip") for year in range(2023, 2027) for semester in (1, 2)]
 
@@ -19,7 +20,14 @@ def clean_rut(value):
     return "".join(c for c in (value or "").upper() if c.isdigit() or c == "K")
 
 
-def process_source(year, semester, url, tenders, source_stats):
+def is_uaf(row):
+    code = (row.get("CodigoExterno") or "").strip().upper()
+    org = (row.get("CodigoOrganismo") or "").strip()
+    unit_rut = clean_rut(row.get("RutUnidad"))
+    return org == TARGET_OCDS_CODE or unit_rut == TARGET_RUT or code.startswith(TARGET_TENDER_PREFIX)
+
+
+def process_source(year, semester, url, tenders, source_stats, observed_orgs):
     print(f"Downloading {year}-{semester}: {url}", flush=True)
     with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
         tmp_path = Path(tmp.name)
@@ -38,20 +46,23 @@ def process_source(year, semester, url, tenders, source_stats):
                 reader = csv.DictReader(text, delimiter=";")
                 for row in reader:
                     total_rows += 1
-                    if (row.get("CodigoOrganismo") or "").strip() != TARGET_ORG:
+                    if not is_uaf(row):
                         continue
                     matched_rows += 1
                     code = (row.get("CodigoExterno") or "").strip()
                     if not code:
                         continue
+                    org_code = (row.get("CodigoOrganismo") or "").strip()
+                    org_name = (row.get("NombreOrganismo") or "").strip()
+                    observed_orgs[(org_code, org_name)] += 1
                     t = tenders.setdefault(code, {
                         "code": code,
                         "title": row.get("Nombre") or "",
                         "description": row.get("Descripcion") or "",
                         "status": row.get("Estado") or "",
                         "status_code": row.get("CodigoEstado") or "",
-                        "buyer_code": TARGET_ORG,
-                        "buyer_name": row.get("NombreOrganismo") or "UNIDAD DE ANALISIS FINANCIERO",
+                        "buyer_code_bulk": org_code,
+                        "buyer_name": org_name or "UNIDAD DE ANALISIS FINANCIERO",
                         "unit_code": row.get("CodigoUnidad") or "",
                         "unit_name": row.get("NombreUnidad") or "",
                         "unit_rut": row.get("RutUnidad") or "",
@@ -119,16 +130,25 @@ def serialise(tenders):
 def main():
     tenders = {}
     stats = []
+    observed_orgs = Counter()
     for year, semester, url in SOURCES:
-        process_source(year, semester, url, tenders, stats)
+        process_source(year, semester, url, tenders, stats, observed_orgs)
     rows = serialise(tenders)
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "scope": "2023-current bulk semester files",
-        "buyer_mp_code": TARGET_ORG,
+        "identity_rules": {
+            "ocds_buyer_code": TARGET_OCDS_CODE,
+            "unit_rut_norm": TARGET_RUT,
+            "tender_prefix": TARGET_TENDER_PREFIX,
+        },
         "buyer_name": "UNIDAD DE ANALISIS FINANCIERO",
         "source_count": len(stats),
         "tender_count": len(rows),
+        "observed_organism_codes": [
+            {"code": code, "name": name, "matched_rows": count}
+            for (code, name), count in observed_orgs.most_common()
+        ],
         "source_stats": stats,
         "tenders": rows,
     }
