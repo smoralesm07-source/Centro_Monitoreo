@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - '.github/workflows/mercado-publico-uaf-backfill.yml'
       - 'mercado-publico-uaf-backfill-trigger.txt'
 
 permissions:
