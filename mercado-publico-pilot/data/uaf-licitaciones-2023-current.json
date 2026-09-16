@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-09-16T16:29:11.251409+00:00",
+  "scope": "2023-current bulk semester files",
+  "buyer_mp_code": "3299",
+  "buyer_name": "UNIDAD DE ANALISIS FINANCIERO",
+  "source_count": 8,
+  "tender_count": 0,
+  "source_stats": [
+    {
+      "year": 2023,
+      "semester": 1,
+      "url": "https://transparenciachc.blob.core.windows.net/lic-da/2023-1.zip",
+      "zip_bytes": 21128286,
+      "csv_name": "lic_2023-1.csv",
+      "csv_uncompressed_bytes": 348622105,
+      "rows_seen": 192813,
+      "matched_rows": 0
+    },
+    {
+      "year": 2023,
+      "semester": 2,
+      "url": "https://transparenciachc.blob.core.windows.net/lic-da/2023-2.zip",
+      "zip_bytes": 21877506,
+      "csv_name": "lic_2023-2.csv",
+      "csv_uncompressed_bytes": 376193276,
+      "rows_seen": 211857,
+      "matched_rows": 0
+    },
+    {
+      "year": 2024,
+      "semester": 1,
+      "url": "https://transparenciachc.blob.core.windows.net/lic-da/2024-1.zip",
+      "zip_bytes": 22852967,
+      "csv_name": "lic_2024-1.csv",
+      "csv_uncompressed_bytes": 382192288,
+      "rows_seen": 206454,
+      "matched_rows": 0
+    },
+    {
+      "year": 2024,
+      "semester": 2,
+      "url": "https://transparenciachc.blob.core.windows.net/lic-da/2024-2.zip",
+      "zip_bytes": 24115228,
+      "csv_name": "lic_2024-2.csv",
+      "csv_uncompressed_bytes": 399367648,
+      "rows_seen": 221071,
+      "matched_rows": 0
+    },
+    {
+      "year": 2025,
+      "semester": 1,
+      "url": "https://transparenciachc.blob.core.windows.net/lic-da/2025-1.zip",
+      "zip_bytes": 14153038,
+      "csv_name": "lic_2025-1.csv",
+      "csv_uncompressed_bytes": 237176138,
+      "rows_seen": 126071,
+      "matched_rows": 0
+    },
+    {
+      "year": 2025,
+      "semester": 2,
+      "url": "https://transparenciachc.blob.core.windows.net/lic-da/2025-2.zip",
+      "zip_bytes": 16202487,
+      "csv_name": "lic_2025-2.csv",
+      "csv_uncompressed_bytes": 284230228,
+      "rows_seen": 150032,
+      "matched_rows": 0
+    },
+    {
+      "year": 2026,
+      "semester": 1,
+      "url": "https://transparenciachc.blob.core.windows.net/lic-da/2026-1.zip",
+      "zip_bytes": 13974048,
+      "csv_name": "lic_2026-1.csv",
+      "csv_uncompressed_bytes": 233047295,
+      "rows_seen": 118536,
+      "matched_rows": 0
+    },
+    {
+      "year": 2026,
+      "semester": 2,
+      "url": "https://transparenciachc.blob.core.windows.net/lic-da/2026-2.zip",
+      "zip_bytes": 14754340,
+      "csv_name": "lic_2026-2.csv",
+      "csv_uncompressed_bytes": 248798522,
+      "rows_seen": 125814,
+      "matched_rows": 0
+    }
+  ],
+  "tenders": []
+}
