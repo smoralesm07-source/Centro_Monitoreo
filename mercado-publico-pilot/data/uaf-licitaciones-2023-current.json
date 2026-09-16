@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-16T16:31:07.159397+00:00",
+  "generated_at": "2026-09-16T16:35:38.665609+00:00",
   "scope": "2023-current bulk semester files",
   "identity_rules": {
     "ocds_buyer_code": "3299",
@@ -119,20 +119,21 @@
       "source_periods": [
         "2026-2"
       ],
-      "item_codes": [
-        "81111805"
+      "items": [
+        {
+          "product_code": "81111805",
+          "description": "Mantenimiento y soporte de sistemas propietarios",
+          "row_count": 1
+        }
       ],
-      "item_names": [
-        "Mantenimiento y soporte de sistemas propietarios"
+      "suppliers": [
+        {
+          "rut_norm": "770174775",
+          "name": "CONSULTORIA Y SOFTWARE EN GESTION DE PROYECTOS SPA",
+          "selected": false,
+          "offer_rows": 1
+        }
       ],
-      "supplier_ruts": [
-        "770174775"
-      ],
-      "supplier_names": [
-        "CONSULTORIA Y SOFTWARE EN GESTION DE PROYECTOS SPA"
-      ],
-      "selected_supplier_ruts": [],
-      "selected_supplier_names": [],
       "row_count": 1
     },
     {
@@ -155,20 +156,21 @@
       "source_periods": [
         "2026-2"
       ],
-      "item_codes": [
-        "81111805"
+      "items": [
+        {
+          "product_code": "81111805",
+          "description": "Mantenimiento y soporte de sistemas propietarios",
+          "row_count": 1
+        }
       ],
-      "item_names": [
-        "Mantenimiento y soporte de sistemas propietarios"
+      "suppliers": [
+        {
+          "rut_norm": "769629807",
+          "name": "SOCIEDAD LPA SOLUCIONES CORPORATIVAS EN GESTION DE PROCESOS LIMITADA",
+          "selected": false,
+          "offer_rows": 1
+        }
       ],
-      "supplier_ruts": [
-        "769629807"
-      ],
-      "supplier_names": [
-        "SOCIEDAD LPA SOLUCIONES CORPORATIVAS EN GESTION DE PROCESOS LIMITADA"
-      ],
-      "selected_supplier_ruts": [],
-      "selected_supplier_names": [],
       "row_count": 1
     },
     {
@@ -191,33 +193,50 @@
       "source_periods": [
         "2026-2"
       ],
-      "item_codes": [
-        "43232107"
+      "items": [
+        {
+          "product_code": "43232107",
+          "description": "Software de edición y creación de páginas Web",
+          "row_count": 12
+        }
       ],
-      "item_names": [
-        "Software de edición y creación de páginas Web"
-      ],
-      "supplier_ruts": [
-        "761791702",
-        "763343812",
-        "763674304",
-        "777007807",
-        "79770640K",
-        "885798004"
-      ],
-      "supplier_names": [
-        "COMERCIALIZADORA TELENET LTDA",
-        "COMPUTACION GRAFICA APLICADA Y CIA LTDA",
-        "MICROGEO S A",
-        "SOC INFORMATICA SIGLO 21 LIMITADA",
-        "SOCIEDAD COMERCIAL FORTEZA Y COMPANIA LIMITADA",
-        "TICHILE  REVENTA  DE SOFTWARE Y HARDWARE SPA"
-      ],
-      "selected_supplier_ruts": [
-        "79770640K"
-      ],
-      "selected_supplier_names": [
-        "COMPUTACION GRAFICA APLICADA Y CIA LTDA"
+      "suppliers": [
+        {
+          "rut_norm": "79770640K",
+          "name": "COMPUTACION GRAFICA APLICADA Y CIA LTDA",
+          "selected": true,
+          "offer_rows": 2
+        },
+        {
+          "rut_norm": "777007807",
+          "name": "COMERCIALIZADORA TELENET LTDA",
+          "selected": false,
+          "offer_rows": 2
+        },
+        {
+          "rut_norm": "885798004",
+          "name": "MICROGEO S A",
+          "selected": false,
+          "offer_rows": 2
+        },
+        {
+          "rut_norm": "761791702",
+          "name": "SOC INFORMATICA SIGLO 21 LIMITADA",
+          "selected": false,
+          "offer_rows": 2
+        },
+        {
+          "rut_norm": "763674304",
+          "name": "SOCIEDAD COMERCIAL FORTEZA Y COMPANIA LIMITADA",
+          "selected": false,
+          "offer_rows": 2
+        },
+        {
+          "rut_norm": "763343812",
+          "name": "TICHILE  REVENTA  DE SOFTWARE Y HARDWARE SPA",
+          "selected": false,
+          "offer_rows": 2
+        }
       ],
       "row_count": 12
     },
@@ -241,45 +260,86 @@
       "source_periods": [
         "2024-2"
       ],
-      "item_codes": [
-        "80111703"
+      "items": [
+        {
+          "product_code": "80111703",
+          "description": "Servicios de evaluación de currículum vitae",
+          "row_count": 12
+        }
       ],
-      "item_names": [
-        "Servicios de evaluación de currículum vitae"
-      ],
-      "supplier_ruts": [
-        "144384261",
-        "760410128",
-        "760678686",
-        "761728431",
-        "764484207",
-        "770258510",
-        "770387086",
-        "773837848",
-        "776008206",
-        "778560453",
-        "795333509",
-        "995910306"
-      ],
-      "supplier_names": [
-        "ADISTRA COMERCIAL LIMITADA",
-        "ALTHUS PARTNERS CONSULTORES LIMITADA",
-        "ANGUITA CONSULTORES SPA",
-        "BIRGIT NEVERMANN GRAHL",
-        "EUROFIRMS OUTSOURCING SPA",
-        "MANDOMEDIO.COM S.A.",
-        "ORGANIZACION HUMANA CONSULTORES ASOCIADOS LIMITADA",
-        "SOCIEDAD COMERCIAL Y PUBLICITARIA ALTAVISION LIMITADA",
-        "SOCIEDAD DE PROFESIONALES GRUPO GBE LIMITADA",
-        "SOCIEDAD DE PROFESIONALES OSSANDÓN AUDITORES CONSULTORES LIMITADA",
-        "SOCIEDAD DE PROFESIONALES Y ASESORÍAS EN GESTIÓN DE PERSONAS CDO CONSU",
-        "TACTICA CONSULTORES SPA"
-      ],
-      "selected_supplier_ruts": [
-        "995910306"
-      ],
-      "selected_supplier_names": [
-        "ANGUITA CONSULTORES SPA"
+      "suppliers": [
+        {
+          "rut_norm": "995910306",
+          "name": "ANGUITA CONSULTORES SPA",
+          "selected": true,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "795333509",
+          "name": "ADISTRA COMERCIAL LIMITADA",
+          "selected": false,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "761728431",
+          "name": "ALTHUS PARTNERS CONSULTORES LIMITADA",
+          "selected": false,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "144384261",
+          "name": "BIRGIT NEVERMANN GRAHL",
+          "selected": false,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "770387086",
+          "name": "EUROFIRMS OUTSOURCING SPA",
+          "selected": false,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "776008206",
+          "name": "MANDOMEDIO.COM S.A.",
+          "selected": false,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "760410128",
+          "name": "ORGANIZACION HUMANA CONSULTORES ASOCIADOS LIMITADA",
+          "selected": false,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "770258510",
+          "name": "SOCIEDAD COMERCIAL Y PUBLICITARIA ALTAVISION LIMITADA",
+          "selected": false,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "760678686",
+          "name": "SOCIEDAD DE PROFESIONALES GRUPO GBE LIMITADA",
+          "selected": false,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "764484207",
+          "name": "SOCIEDAD DE PROFESIONALES OSSANDÓN AUDITORES CONSULTORES LIMITADA",
+          "selected": false,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "778560453",
+          "name": "SOCIEDAD DE PROFESIONALES Y ASESORÍAS EN GESTIÓN DE PERSONAS CDO CONSU",
+          "selected": false,
+          "offer_rows": 1
+        },
+        {
+          "rut_norm": "773837848",
+          "name": "TACTICA CONSULTORES SPA",
+          "selected": false,
+          "offer_rows": 1
+        }
       ],
       "row_count": 12
     },
@@ -303,45 +363,86 @@
       "source_periods": [
         "2024-2"
       ],
-      "item_codes": [
-        "43232107"
+      "items": [
+        {
+          "product_code": "43232107",
+          "description": "Software de edición y creación de páginas Web",
+          "row_count": 35
+        }
       ],
-      "item_names": [
-        "Software de edición y creación de páginas Web"
-      ],
-      "supplier_ruts": [
-        "760441651",
-        "763309843",
-        "763674304",
-        "764841514",
-        "765965705",
-        "767994303",
-        "773320136",
-        "776079766",
-        "777007807",
-        "79770640K",
-        "885798004",
-        "89912300K"
-      ],
-      "supplier_names": [
-        "COMERCIALIZADORA SP DIGITAL SPA",
-        "COMERCIALIZADORA TELENET LTDA",
-        "COMPUTACION GRAFICA APLICADA Y CIA LTDA",
-        "FJ IMPORTACIONES SPA",
-        "GEO LOGISTICA S.P.A.",
-        "INGENIERIA Y CONSTRUCCION RICARDO  RODRIGUEZ Y CIA LTDA",
-        "MICROGEO S A",
-        "SERVICIOS DE TECNOLOGIA, EDUCACION, CIENCIA Y ARTE LIMITADA",
-        "SOCIEDAD COMERCIAL ALCA LIMITADA",
-        "SOCIEDAD COMERCIAL FORTEZA Y COMPANIA LIMITADA",
-        "SOLUCIONES TECNOLOGICAS CLEVERTEC LIMITADA",
-        "TICHILE SPA"
-      ],
-      "selected_supplier_ruts": [
-        "763674304"
-      ],
-      "selected_supplier_names": [
-        "SOCIEDAD COMERCIAL FORTEZA Y COMPANIA LIMITADA"
+      "suppliers": [
+        {
+          "rut_norm": "763674304",
+          "name": "SOCIEDAD COMERCIAL FORTEZA Y COMPANIA LIMITADA",
+          "selected": true,
+          "offer_rows": 3
+        },
+        {
+          "rut_norm": "767994303",
+          "name": "COMERCIALIZADORA SP DIGITAL SPA",
+          "selected": false,
+          "offer_rows": 3
+        },
+        {
+          "rut_norm": "777007807",
+          "name": "COMERCIALIZADORA TELENET LTDA",
+          "selected": false,
+          "offer_rows": 3
+        },
+        {
+          "rut_norm": "79770640K",
+          "name": "COMPUTACION GRAFICA APLICADA Y CIA LTDA",
+          "selected": false,
+          "offer_rows": 3
+        },
+        {
+          "rut_norm": "773320136",
+          "name": "FJ IMPORTACIONES SPA",
+          "selected": false,
+          "offer_rows": 3
+        },
+        {
+          "rut_norm": "764841514",
+          "name": "GEO LOGISTICA S.P.A.",
+          "selected": false,
+          "offer_rows": 3
+        },
+        {
+          "rut_norm": "89912300K",
+          "name": "INGENIERIA Y CONSTRUCCION RICARDO  RODRIGUEZ Y CIA LTDA",
+          "selected": false,
+          "offer_rows": 3
+        },
+        {
+          "rut_norm": "885798004",
+          "name": "MICROGEO S A",
+          "selected": false,
+          "offer_rows": 3
+        },
+        {
+          "rut_norm": "760441651",
+          "name": "SERVICIOS DE TECNOLOGIA, EDUCACION, CIENCIA Y ARTE LIMITADA",
+          "selected": false,
+          "offer_rows": 2
+        },
+        {
+          "rut_norm": "765965705",
+          "name": "SOCIEDAD COMERCIAL ALCA LIMITADA",
+          "selected": false,
+          "offer_rows": 3
+        },
+        {
+          "rut_norm": "763309843",
+          "name": "SOLUCIONES TECNOLOGICAS CLEVERTEC LIMITADA",
+          "selected": false,
+          "offer_rows": 3
+        },
+        {
+          "rut_norm": "776079766",
+          "name": "TICHILE SPA",
+          "selected": false,
+          "offer_rows": 3
+        }
       ],
       "row_count": 35
     }
