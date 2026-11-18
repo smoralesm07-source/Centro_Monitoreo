@@ -36,24 +36,13 @@
       <div class="top-actions">
         <div id="livePill" class="pill"><i class="dot"></i><span>iniciando</span></div>
         <div id="updatedPill" class="pill">sin corte</div>
-        <button id="refreshBtn" class="btn hidden">Actualizar</button>
-        <button id="signOutBtn" class="btn hidden">Salir</button>
+        <button id="refreshBtn" class="btn">Actualizar</button>
       </div>
     </header>
 
-    <section id="loginView" class="login">
-      <div class="login-card">
-        <div class="login-logo"><div class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7.5 12 3l8 4.5-8 4.5-8-4.5Z" stroke="#36d4aa" stroke-width="1.6"/><path d="m4 12 8 4.5 8-4.5M4 16.5 12 21l8-4.5" stroke="#36d4aa" stroke-width="1.6"/></svg></div><div><h2>Stack Monitor</h2><div class="kicker">Infraestructura transversal</div></div></div>
-        <p>Monitor independiente para observar capacidad, gasto, disponibilidad y evolución del stack tecnológico que sostiene tus aplicaciones.</p>
-        <div id="loginError" class="banner"></div>
-        <button id="signInBtn" class="btn primary">Ingresar con Microsoft</button>
-        <div class="note">La autenticación usa la misma identidad Microsoft Entra y la misma lista de usuarios autorizados de tu entorno. Stack Monitor no guarda credenciales administrativas en el navegador.</div>
-      </div>
-    </section>
-
-    <main id="dashboard" class="hidden">
+    <main id="dashboard">
       <section class="hero">
-        <div><div class="kicker">GitHub · Supabase · Cloudflare · Delivery</div><h1>Tu infraestructura, como un sistema.</h1><p class="lede">Una vista única de capacidad, costo, rendimiento y riesgo operativo. Stack Monitor separa telemetría real, referencias de precio y métricas aún no conectadas para evitar falsos ceros y decisiones basadas en supuestos.</p></div>
+        <div><div class="kicker">GitHub · Supabase · Cloudflare · Delivery · Vista pública de solo lectura</div><h1>Tu infraestructura, como un sistema.</h1><p class="lede">Una vista única de capacidad, costo, rendimiento y riesgo operativo. Stack Monitor separa telemetría real, referencias de precio y métricas aún no conectadas para evitar falsos ceros y decisiones basadas en supuestos.</p></div>
         <div class="hero-side"><div class="hero-stat"><span>Stack conocido</span><b id="stackAssets">—</b></div><div class="hero-stat"><span>Base mensual conocida</span><b id="monthlyCost">—</b></div><div class="hero-stat"><span>Presión crítica</span><b id="criticalPressure">—</b></div><div class="hero-stat"><span>Estado general</span><b id="overallState">—</b></div></div>
       </section>
 
@@ -94,13 +83,9 @@
   </div>
 
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
     const SUPABASE_URL='https://ldmtlwzqaqmegedktlxr.supabase.co';
-    const SUPABASE_KEY='sb_publishable_Nu21dZFBM3NwtIvOwIM8ag_9tyfDJyR';
-    const supabase=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:'atlas-observatorio-auth'}});
     const $=id=>document.getElementById(id);
-    const state={session:null,data:null,busy:false};
+    const state={data:null,busy:false};
     const bytes=v=>{const n=Number(v||0);if(!Number.isFinite(n)||n<=0)return'0 B';const u=['B','KB','MB','GB','TB'];const i=Math.min(u.length-1,Math.floor(Math.log(n)/Math.log(1000)));return`${(n/1000**i).toFixed(i>2?2:i>1?1:0)} ${u[i]}`};
     const pct=v=>Number.isFinite(Number(v))?`${Number(v).toFixed(1)}%`:'—';
     const money=v=>Number.isFinite(Number(v))?`US$${Number(v).toFixed(Number(v)%1?2:0)}`:'No conectado';
@@ -110,47 +95,44 @@
     const factRows=rows=>rows.map(([k,v])=>`<div><dt>${esc(k)}</dt><dd>${v}</dd></div>`).join('');
     const coverageRow=(k,v,tone)=>`<div class="coverage-row"><span>${esc(k)}</span><b class="${tone}">${esc(v)}</b></div>`;
 
-    async function ensureSession(){
-      const {data}=await supabase.auth.getSession();
-      let session=data.session;
-      if(session){
-        const {data:userData,error:userError}=await supabase.auth.getUser();
-        if(userError||!userData?.user){
-          const {data:refreshed,error:refreshError}=await supabase.auth.refreshSession();
-          session=refreshError?null:refreshed.session;
-          if(refreshError)await supabase.auth.signOut({scope:'local'});
-        }
-      }
-      state.session=session;
-      renderAuth();
-      return session;
-    }
+    // Acceso público de solo lectura: no se inicia sesión ni se usa token de usuario.
+    function init(){load()}
+    $('refreshBtn').onclick=()=>load();
 
-    async function init(){
-      const session=await ensureSession();
-      supabase.auth.onAuthStateChange((_e,s)=>{state.session=s;renderAuth();if(s)load();});
-      if(session)load();
-    }
-    function renderAuth(){const logged=!!state.session;$('loginView').classList.toggle('hidden',logged);$('dashboard').classList.toggle('hidden',!logged);$('refreshBtn').classList.toggle('hidden',!logged);$('signOutBtn').classList.toggle('hidden',!logged)}
-    $('signInBtn').onclick=async()=>{const btn=$('signInBtn');btn.disabled=true;btn.textContent='Redirigiendo…';$('loginError').classList.remove('show');const {error}=await supabase.auth.signInWithOAuth({provider:'azure',options:{scopes:'email',redirectTo:location.href.split('#')[0]}});if(error){$('loginError').innerHTML=`<b>No fue posible iniciar sesión.</b> ${esc(error.message)}`;$('loginError').classList.add('show');btn.disabled=false;btn.textContent='Ingresar con Microsoft'}};
-    $('signOutBtn').onclick=()=>supabase.auth.signOut();$('refreshBtn').onclick=()=>load();
-
-    async function callMetrics(session){
-      const r=await fetch(`${SUPABASE_URL}/functions/v1/stack-monitor-metrics`,{method:'POST',headers:{apikey:SUPABASE_KEY,authorization:`Bearer ${session.access_token}`,'content-type':'application/json'},body:'{}'});
-      let d=null;try{d=await r.json()}catch{d={ok:false,error:`HTTP ${r.status}`}}
+    async function requestMetrics(){
+      const r=await fetch(`${SUPABASE_URL}/functions/v1/stack-monitor-public`,{
+        method:'POST',
+        headers:{'content-type':'application/json'},
+        body:'{}'
+      });
+      let d=null;
+      try{d=await r.json()}catch{d={ok:false,error:`HTTP ${r.status}`}}
       return{r,d};
     }
 
-    async function requestMetrics(){
-      let result=await callMetrics(state.session);
-      if(result.r.status===401){
-        const {data,error}=await supabase.auth.refreshSession();
-        if(!error&&data.session){state.session=data.session;result=await callMetrics(data.session)}
+    async function load(){
+      if(state.busy)return;
+      state.busy=true;
+      $('refreshBtn').disabled=true;
+      $('refreshBtn').textContent='Actualizando…';
+      $('dashboard').classList.add('loading');
+      try{
+        const {r,d}=await requestMetrics();
+        if(!r.ok||!d?.ok)throw new Error(d?.detail||d?.error||`HTTP ${r.status}`);
+        state.data=d;
+        render(d);
+        $('errorBanner').classList.remove('show');
+      }catch(e){
+        $('errorBanner').innerHTML=`<b>Telemetría no disponible.</b> ${esc(e?.message||e)}. Se conserva la última vista cargada.`;
+        $('errorBanner').classList.add('show');
+        setLive('degraded');
+      }finally{
+        state.busy=false;
+        $('refreshBtn').disabled=false;
+        $('refreshBtn').textContent='Actualizar';
+        $('dashboard').classList.remove('loading');
       }
-      return result;
     }
-
-    async function load(){if(!state.session||state.busy)return;state.busy=true;$('refreshBtn').disabled=true;$('refreshBtn').textContent='Actualizando…';$('dashboard').classList.add('loading');try{const {r,d}=await requestMetrics();if(!r.ok||!d?.ok){if(r.status===401){await supabase.auth.signOut({scope:'local'});throw new Error('La sesión expiró. Ingresa nuevamente con Microsoft.')}throw new Error(d?.detail||d?.error||`HTTP ${r.status}`)}state.data=d;render(d);$('errorBanner').classList.remove('show')}catch(e){$('errorBanner').innerHTML=`<b>Telemetría no disponible.</b> ${esc(e?.message||e)}. Se conserva la última vista cargada.`;$('errorBanner').classList.add('show');setLive('degraded')}finally{state.busy=false;$('refreshBtn').disabled=false;$('refreshBtn').textContent='Actualizar';$('dashboard').classList.remove('loading')}}
 
     function setLive(status){const el=$('livePill'),dot=el.querySelector('.dot'),span=el.querySelector('span');dot.className='dot '+(status==='healthy'?'good':status==='degraded'?'bad':'warn');span.textContent=status==='healthy'?'telemetría viva':status==='degraded'?'telemetría degradada':'telemetría parcial'}
     function render(d){
@@ -171,8 +153,8 @@
     function renderHealth(main,s){const cells=[['Cache hit',pct(main.cache_hit_pct),'lecturas desde cache',Number(main.cache_hit_pct)>=95?'good':'warn'],['Conexiones',`${main.connections_total??'—'}/${main.max_connections??'—'}`,`${pct(s.connection_pressure_pct)} de presión`,'good'],['Deadlocks',String(main.deadlocks??'—'),'desde reset de estadísticas',Number(main.deadlocks||0)===0?'good':'bad'],['Índices sin uso',String(main.unused_indexes??'—'),'sin scans observados',''],['Tablas sin PK',String(main.tables_without_primary_key??'—'),'revisión de modelo',Number(main.tables_without_primary_key||0)?'warn':'good'],['Tablas públicas',String(main.public_tables??'—'),bytes(main.public_tables_bytes),'']];$('healthGrid').innerHTML=cells.map(([a,b,c,t])=>`<div class="health ${t}"><span>${a}</span><b>${b}</b><small>${c}</small></div>`).join('')}
     function renderTrend(history,current){const rows=history.filter(x=>x.provider==='supabase'&&x.metric_key==='database_bytes').map(x=>({t:x.captured_at,v:Number(x.value_numeric)})).filter(x=>Number.isFinite(x.v));const vals=rows.length?rows.map(x=>x.v):[Number(current||0),Number(current||0)],min=Math.min(...vals),max=Math.max(...vals),span=Math.max(1,max-min),pts=vals.map((v,i)=>`${i/Math.max(1,vals.length-1)*100},${34-(v-min)/span*28}`).join(' ');$('trendLine').setAttribute('points',pts);$('trendMeta').textContent=rows.length>=2?`${rows.length} cortes · ${growthText(rows)}`:'historial acumulándose desde hoy'}
     function growthText(rows){const first=rows[0],last=rows[rows.length-1],dv=last.v-first.v,days=(new Date(last.t)-new Date(first.t))/86400000;if(!days||dv<=0)return'sin crecimiento medible';const perDay=dv/days;return`+${bytes(perDay)}/día estimados`}
-    function renderAlerts(d,main){const a=[];if(Number(main.disk_reference_pct||0)>=90)a.push(['warn','Base principal sobre 90% de referencia',`${pct(main.disk_reference_pct)} observado. La capacidad disponible es el principal límite inmediato del stack.`]);if(Number(d.security?.security_advisories||0)>0)a.push(['bad',`${d.security.security_advisories} advertencias de seguridad`,'Incluyen protección de contraseñas filtradas deshabilitada y revisión pendiente de un RPC SECURITY DEFINER.']);if(Number(main.unused_indexes||0)>0)a.push(['','Deuda de índices para revisar',`${main.unused_indexes} índices no registran scans. No deben eliminarse automáticamente; forman una cola de optimización.`]);if(d.cloudflare?.actual_spend_usd==null)a.push(['','Cloudflare billing aún opaco','Disponibilidad del Worker sí está monitorizada; costo y consumo todavía no.']);$('alertMeta').textContent=`${a.length} activas`;$('alerts').innerHTML=a.map(([tone,title,text])=>`<div class="alert ${tone}"><i></i><div><b>${esc(title)}</b><p>${esc(text)}</p></div></div>`).join('')}
-    function renderCoverage(d){const gh=d.github||{},cf=d.cloudflare||{};$('coverage').innerHTML=[['Supabase · capacidad y conexiones','Tiempo real','good'],['Supabase · factura','No conectada','muted'],['GitHub · repositorios',gh.mode==='authenticated'?'API autenticada':'Público + inventario','good'],['GitHub · Actions/billing','No conectado','muted'],['Cloudflare · Worker',cf.status==='healthy'?'Tiempo real':'Parcial',cf.status==='healthy'?'good':'warn'],['Cloudflare · requests/CPU/factura','No conectado','muted']].map(x=>coverageRow(...x)).join('')}
+    function renderAlerts(d,main){const a=[];if(Number(main.disk_reference_pct||0)>=90)a.push(['warn','Base principal sobre 90% de referencia',`${pct(main.disk_reference_pct)} observado. La capacidad disponible es el principal límite inmediato del stack.`]);if(Number(d.security?.security_advisories||0)>0)a.push(['bad',`${d.security.security_advisories} advertencias de seguridad`,'Registro histórico de configuración de seguridad. El detalle técnico permanece fuera de esta vista pública.']);if(Number(main.unused_indexes||0)>0)a.push(['','Deuda de índices para revisar',`${main.unused_indexes} índices no registran scans. No deben eliminarse automáticamente; forman una cola de optimización.`]);if(d.cloudflare?.actual_spend_usd==null)a.push(['','Cloudflare billing aún opaco','Disponibilidad del Worker sí está monitorizada; costo y consumo todavía no.']);$('alertMeta').textContent=`${a.length} activas`;$('alerts').innerHTML=a.map(([tone,title,text])=>`<div class="alert ${tone}"><i></i><div><b>${esc(title)}</b><p>${esc(text)}</p></div></div>`).join('')}
+    function renderCoverage(d){const gh=d.github||{},cf=d.cloudflare||{};$('coverage').innerHTML=[['Supabase · capacidad y conexiones','Tiempo real','good'],['Supabase · factura','No conectada','muted'],['GitHub · repositorios',gh.mode==='authenticated'?'API autenticada':'Repositorios públicos','good'],['GitHub · Actions/billing','No conectado','muted'],['Cloudflare · Worker',cf.status==='healthy'?'Tiempo real':'Parcial',cf.status==='healthy'?'good':'warn'],['Cloudflare · requests/CPU/factura','No conectado','muted']].map(x=>coverageRow(...x)).join('')}
     init();
   </script>
 </body>
